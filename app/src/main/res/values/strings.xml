@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TrekIt</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="home">Home</string>
+    <string name="all_peaks">All Peaks</string>
+    <string name="favourite_peaks">Favourite Peaks</string>
+    <string name="climbed_peaks">Climbed Peaks</string>
+    <string name="about_us">About Us</string>
+</resources>
