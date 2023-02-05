@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="ie.wit.trekit">
+    package="ie.wit.trekit" >
 
     <application
         android:name="ie.wit.trekit.main.MainApp"
@@ -13,24 +13,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TrekIt"
-        tools:targetApi="31">
+        tools:targetApi="31" >
+        <activity
+            android:name=".activities.MountainActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.MountainListActivity"
             android:exported="true"
-            android:label="@string/mountainListLabel">
-
+            android:label="@string/mountainListLabel" >
         </activity>
         <activity
             android:name=".activities.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.TrekIt.NoActionBar">
+            android:theme="@style/Theme.TrekIt.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            </activity>
+        </activity>
     </application>
 
 </manifest>

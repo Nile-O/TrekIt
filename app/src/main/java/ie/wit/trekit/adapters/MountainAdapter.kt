@@ -10,7 +10,7 @@ interface MountainListener {
     fun onMountainClick(mountain: MountainModel)
 }
 
-class MountainAdapter constructor(private var mountains: List<MountainModel>) :
+class MountainAdapter constructor(private var mountains: List<MountainModel>, private val listener: MountainListener) :
     RecyclerView.Adapter<MountainAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -20,7 +20,7 @@ class MountainAdapter constructor(private var mountains: List<MountainModel>) :
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
         val mountain = mountains[holder.adapterPosition]
-        holder.bind(mountain)
+        holder.bind(mountain, listener)
     }
 
     override fun getItemCount(): Int = mountains.size
@@ -28,12 +28,13 @@ class MountainAdapter constructor(private var mountains: List<MountainModel>) :
     class MainHolder(private val binding: CardMountainBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(mountain: MountainModel) {
+        fun bind(mountain: MountainModel, listener: MountainListener) {
             binding.mountainName.text = mountain.mountainName
-
             binding.elevation.text = mountain.elevation.toString()
+            binding.root.setOnClickListener{
+                listener.onMountainClick(mountain)
+            }
         }
     }
-
 
 }
