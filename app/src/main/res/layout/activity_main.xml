@@ -5,11 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawerLayout"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
 <include
     layout="@layout/content_main"
     />
+
+    <Button
+        android:id="@+id/button_peaks"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="147dp"
+        android:layout_marginEnd="150dp"
+        android:insetTop="680dp"
+        android:insetBottom="5dp"
+        android:text="@string/_100_peaks" />
+
     <com.google.android.material.navigation.NavigationView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

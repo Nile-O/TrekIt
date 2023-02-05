@@ -7,4 +7,14 @@
     <string name="favourite_peaks">Favourite Peaks</string>
     <string name="climbed_peaks">Climbed Peaks</string>
     <string name="about_us">About Us</string>
+    <string name="mountain_name">Mountain Name</string>
+    <string name="elevation">Elevation</string>
+    <string name="area_name">Area Name</string>
+    <string name="mountainListLabel">List of Mountains</string>
+    <string name="welcome_to_trek_it">Welcome to Trek It</string>
+    <string name="peaksBlurb">Visit our list of peaks to find out information about the highest 100 peaks in Ireland.</string>
+    <string name="use_map_blurb">Use the map to navigate to the peak and get started on your climb!</string>
+    <string name="info_blurb">Select a peak to view it\'s details.</string>
+    <string name="content_desc_welcome_image">Image of mountains, a valley and cloudy sky</string>
+    <string name="_100_peaks">100 Peaks</string>
 </resources>
