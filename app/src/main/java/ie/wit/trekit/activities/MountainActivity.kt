@@ -42,12 +42,16 @@ class MountainActivity : AppCompatActivity() {
 
 
             binding.mountainLocation.setOnClickListener{
-                val loc = LatLng(mountain.mountainLat.toDouble(), mountain.mountainLong.toDouble())
-                val launcherIntent = Intent(this, MapActivity::class.java)
-                    .putExtra("location", loc)
-                mapIntentLauncher.launch(launcherIntent)
+                val lat = mountain.mountainLat.toString()
+                val long = mountain.mountainLong.toString()
+                //val loc = LatLng(mountain.mountainLat, mountain.mountainLong)
+                val mapActivityIntent = Intent(this, MapActivity::class.java)
+                    mapActivityIntent.putExtra("location", lat)
+                    mapActivityIntent.putExtra("location1", long)
+              //  mapIntentLauncher.launch(launcherIntent)
+                startActivity(mapActivityIntent)
             }
-            registerMapCallback()
+            //registerMapCallback()
 
         }
     }
@@ -58,7 +62,7 @@ class MountainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_mountain_list, menu)
+        menuInflater.inflate(R.menu.menu_mountain_activity, menu)
         return super.onCreateOptionsMenu(menu)
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

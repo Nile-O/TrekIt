@@ -8,10 +8,10 @@
         android:title="@string/menu_cancelList"
         app:showAsAction="always"/>
 
-    <item
-        android:id="@+id/item_filter"
-        android:title="@string/menu_filterList"
-        android:icon="@android:drawable/ic_menu_search"
-        app:showAsAction="always"/>
 
-  </menu>
+    <item
+        android:id="@+id/item_favourite"
+        android:title="@string/menu_addToFavourites"
+        android:icon="@android:drawable/star_off"
+        app:showAsAction="always"/>
+</menu>

@@ -3,9 +3,12 @@ package ie.wit.trekit.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
+import ie.wit.trekit.R
 import ie.wit.trekit.adapters.MountainAdapter
 import ie.wit.trekit.adapters.MountainListener
 import ie.wit.trekit.main.MainApp
@@ -21,6 +24,8 @@ class MountainListActivity : AppCompatActivity(), MountainListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMountainListBinding.inflate(layoutInflater)
+        binding.toolbar.title = title
+        setSupportActionBar(binding.toolbar)
         setContentView(binding.root)
 
         app = application as MainApp
@@ -42,6 +47,18 @@ class MountainListActivity : AppCompatActivity(), MountainListener {
         refreshIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             { binding.recyclerView.adapter?.notifyDataSetChanged() }
+    }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_mountain_list, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_cancel -> {
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

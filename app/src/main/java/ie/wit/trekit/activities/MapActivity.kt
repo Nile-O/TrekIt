@@ -1,8 +1,7 @@
 package ie.wit.trekit.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -13,6 +12,7 @@ import ie.wit.trekit.R
 import ie.wit.trekit.databinding.ActivityMapBinding
 import ie.wit.trekit.models.MountainModel
 import timber.log.Timber.i
+
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -37,9 +37,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        val loc = LatLng(mountain.mountainLat.toDouble(), mountain.mountainLong.toDouble())
-        //val loc = LatLng(-34.0, 151.0)
-
+        val intent = intent
+        val bundle = intent.extras
+        //val loc = LatLng(mountain.mountainLat.toDouble(), mountain.mountainLong.toDouble())
+       // val loc = LatLng(-34.0, 151.0)
+        if (bundle != null){
+        val check = intent.getStringExtra("location")
+        val check1 = intent.getStringExtra("location1")
+        val loc = LatLng(check!!.toDouble(),check1!!.toDouble())
         val options = MarkerOptions()
             .title("Peak")
             .snippet("GPS : $loc")
@@ -47,5 +52,5 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         map.addMarker(options)
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 16f))
         i("map ready")
-    }
+    }}
 }
