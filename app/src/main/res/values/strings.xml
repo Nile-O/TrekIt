@@ -17,4 +17,15 @@
     <string name="info_blurb">Select a peak to view it\'s details.</string>
     <string name="content_desc_welcome_image">Image of mountains, a valley and cloudy sky</string>
     <string name="_100_peaks">100 Peaks</string>
+    <string name="title_activity_map">Map of Peak Location</string>
+    <string name="peak_information">Peak Information</string>
+    <string name="button_location">View Location</string>
+    <string name="longitude">longitude</string>
+    <string name="latitude">latitude</string>
+    <string name="meters">m</string>
+    <string name="menu_cancelList">Cancel</string>
+    <string name="menu_filterList">Filter List</string>
+    <string name="menu_addToFavourites">Add To Favourites</string>
+    <string name="longitude_label">Longitude</string>
+    <string name="latitude_label">Latitude</string>
 </resources>

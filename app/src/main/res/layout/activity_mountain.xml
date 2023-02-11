@@ -7,60 +7,175 @@
     android:layout_height="match_parent"
     tools:context="ie.wit.trekit.activities.MountainActivity">
 
-    <ScrollView
-        android:id="@+id/scrollView2"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        tools:layout_editor_absoluteX="232dp"
-        tools:layout_editor_absoluteY="38dp">
+        android:layout_height="wrap_content"
+        android:background="@color/teal_700"
+        android:fitsSystemWindows="true"
+        app:elevation="0dip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="32dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/scrollView2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:titleTextAppearance="@style/Toolbar.TitleText"
+            app:titleTextColor="@color/white" />
+    </com.google.android.material.appbar.AppBarLayout>
+    <TextView
+        android:id="@+id/mountainName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/mountain_name"
+        android:textColor="@color/orange"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.132" />
 
-            <TextView
-                android:id="@+id/mountainName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:text="@string/mountain_name"
-                android:textColor="@color/orange"
-                android:textSize="36sp" />
-        <TextView
-            android:id="@+id/areaName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="@string/area_name"
-            android:textColor="@color/gray_700"
-            android:textSize="24sp" />
+    <TextView
+        android:id="@+id/elevation"
+        android:layout_width="86dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/elevation"
+        android:textColor="@color/gray_700"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/areaName"
+        tools:ignore="NotSibling" />
 
-        <TextView
-            android:id="@+id/elevation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="@string/elevation"
-            android:textColor="@color/gray_700"
-            android:textSize="24sp" />
+    <TextView
+        android:id="@+id/units"
+        android:layout_width="48dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="24dp"
+        android:text="@string/meters"
+        android:textColor="@color/gray_700"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/elevation"
+        app:layout_constraintTop_toTopOf="@+id/elevation" />
 
-            <com.google.android.gms.maps.MapView
-                android:id="@+id/mapView"
-                android:layout_width="match_parent"
-                android:layout_height="396dp" />
+    <TextView
+        android:id="@+id/lat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/latitude_label"
+        android:textColor="@color/gray_700"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/mountainLat"
+        app:layout_constraintStart_toStartOf="@+id/mountainLat"
+        app:layout_constraintTop_toBottomOf="@+id/elevation" />
 
-        </LinearLayout>
-    </ScrollView>
+    <TextView
+        android:id="@+id/longit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/longitude_label"
+        android:textColor="@color/gray_700"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/mountainLong"
+        app:layout_constraintStart_toStartOf="@+id/mountainLong"
+        app:layout_constraintTop_toBottomOf="@+id/elevation" />
 
+    <TextView
+        android:id="@+id/mountainLong"
+        android:layout_width="176dp"
+        android:layout_height="36dp"
+        android:text="@string/longitude"
+        android:textColor="@color/gray_700"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.648"
+        app:layout_constraintStart_toEndOf="@+id/mountainLat"
+        app:layout_constraintTop_toTopOf="@+id/mountainLat" />
 
+    <TextView
+        android:id="@+id/mountainLat"
+        android:layout_width="130dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/latitude"
+        android:textColor="@color/gray_700"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/mapView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/elevation"
+        app:layout_constraintVertical_bias="0.432" />
+
+    <Button
+        android:id="@+id/mountainLocation"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/orange"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:stateListAnimator="@null"
+        android:text="@string/button_location"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/mapView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mountainLat"
+        app:layout_constraintVertical_bias="0.926" />
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="333dp"
+        android:layout_height="263dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.176"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/areaName"
+        android:layout_width="372dp"
+        android:layout_height="36dp"
+        android:layout_margin="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="72dp"
+        android:text="@string/area_name"
+        android:textColor="@color/gray_700"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mountainName" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="72dp"
+        android:layout_height="63dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/lat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/areaName"
+        app:srcCompat="@drawable/teal700_peak" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

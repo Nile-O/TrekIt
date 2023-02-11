@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import ie.wit.trekit.R
 import ie.wit.trekit.databinding.ActivityMainBinding
@@ -21,7 +22,6 @@ import timber.log.Timber.i
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    var mountain = MountainModel()
     var app : MainApp? = null
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
 
@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         binding.buttonPeaks.setOnClickListener(View.OnClickListener { startActivity(Intent(this, MountainListActivity::class.java)) })
 
 
+
         val toggle = ActionBarDrawerToggle(this,drawerLayout, toolbar,
             R.string.open,
             R.string.close
@@ -44,4 +45,5 @@ class MainActivity : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
             }
+
 }
