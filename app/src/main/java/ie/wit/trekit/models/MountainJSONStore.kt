@@ -12,6 +12,7 @@ import java.util.*
 const val JSON_FILE = "mountains.json"
 val gsonBuilder = GsonBuilder().registerTypeAdapter(Uri::class.java, UriParser()).create()
 val listType: Type = object : TypeToken<ArrayList<MountainModel>>() {}.type
+
 fun generateRandomId(): Long {
     return Random().nextLong()
 }

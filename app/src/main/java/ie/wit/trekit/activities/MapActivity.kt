@@ -31,16 +31,12 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
 
-       // binding.mountain.mountainLat.text = mountain.mountainLat.toString()
-      //  binding.mountain.mountainLong.text = mountain.mountainLong.toString()
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         val intent = intent
         val bundle = intent.extras
-        //val loc = LatLng(mountain.mountainLat.toDouble(), mountain.mountainLong.toDouble())
-       // val loc = LatLng(-34.0, 151.0)
         if (bundle != null){
         val check = intent.getStringExtra("location")
         val check1 = intent.getStringExtra("location1")
@@ -50,7 +46,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             .snippet("GPS : $loc")
             .position(loc)
         map.addMarker(options)
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 16f))
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 14f))
         i("map ready")
     }}
 }

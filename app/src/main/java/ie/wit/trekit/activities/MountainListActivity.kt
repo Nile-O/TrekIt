@@ -20,6 +20,7 @@ class MountainListActivity : AppCompatActivity(), MountainListener {
     lateinit var app: MainApp
     private lateinit var binding: ActivityMountainListBinding
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,7 @@ class MountainListActivity : AppCompatActivity(), MountainListener {
         binding.recyclerView.adapter = MountainAdapter(app.mountains.findAll(), this)
 
         registerRefreshCallback()
+        registerMapCallback()
 
     }
 
@@ -57,8 +59,17 @@ class MountainListActivity : AppCompatActivity(), MountainListener {
             R.id.item_cancel -> {
                 finish()
             }
+            R.id.item_map -> {
+                val launcherIntent = Intent(this, MountainMapsActivity::class.java)
+                mapIntentLauncher.launch(launcherIntent)
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun registerMapCallback() {
+        mapIntentLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+        {}
     }
 
 }

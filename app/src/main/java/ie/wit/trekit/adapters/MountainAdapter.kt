@@ -7,7 +7,10 @@ import ie.wit.trekit.databinding.CardMountainBinding
 import ie.wit.trekit.models.MountainModel
 
 interface MountainListener {
+
+
     fun onMountainClick(mountain: MountainModel)
+
 }
 
 class MountainAdapter constructor(private var mountains: List<MountainModel>, private val listener: MountainListener) :

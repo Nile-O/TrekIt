@@ -44,22 +44,15 @@ class MountainActivity : AppCompatActivity() {
             binding.mountainLocation.setOnClickListener{
                 val lat = mountain.mountainLat.toString()
                 val long = mountain.mountainLong.toString()
-                //val loc = LatLng(mountain.mountainLat, mountain.mountainLong)
                 val mapActivityIntent = Intent(this, MapActivity::class.java)
                     mapActivityIntent.putExtra("location", lat)
                     mapActivityIntent.putExtra("location1", long)
-              //  mapIntentLauncher.launch(launcherIntent)
                 startActivity(mapActivityIntent)
             }
-            //registerMapCallback()
 
         }
     }
-    private fun registerMapCallback() {
-        mapIntentLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { Timber.i("Map Loaded") }
-    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_mountain_activity, menu)
