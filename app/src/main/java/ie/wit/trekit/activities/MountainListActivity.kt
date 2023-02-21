@@ -14,6 +14,7 @@ import ie.wit.trekit.adapters.MountainListener
 import ie.wit.trekit.main.MainApp
 import ie.wit.trekit.databinding.ActivityMountainListBinding
 import ie.wit.trekit.models.MountainModel
+import ie.wit.trekit.views.mountain.MountainView
 
 class MountainListActivity : AppCompatActivity(), MountainListener {
 
@@ -41,7 +42,7 @@ class MountainListActivity : AppCompatActivity(), MountainListener {
     }
 
     override fun onMountainClick(mountain: MountainModel) {
-        val launcherIntent = Intent(this, MountainActivity::class.java)
+        val launcherIntent = Intent(this, MountainView::class.java)
         launcherIntent.putExtra("mountain_show", mountain)
         refreshIntentLauncher.launch(launcherIntent)
     }

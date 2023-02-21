@@ -36,8 +36,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         val intent = intent
-        val bundle = intent.extras
-        if (bundle != null){
+        val extras = getIntent().extras
+        if (extras != null){
         val check = intent.getStringExtra("location")
         val check1 = intent.getStringExtra("location1")
         val loc = LatLng(check!!.toDouble(),check1!!.toDouble())

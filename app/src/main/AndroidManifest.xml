@@ -29,7 +29,7 @@
             android:exported="false"
             android:label="@string/title_activity_map" />
         <activity
-            android:name=".activities.MountainActivity"
+            android:name=".views.mountain.MountainView"
             android:exported="false"
             android:label="@string/peak_information" />
         <activity
