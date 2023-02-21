@@ -14,6 +14,10 @@ class MountainMemStore : MountainStore {
         mountains.add(mountain)
         logAll()
     }
+    override fun findById(id: Long): MountainModel? {
+        return mountains.find { it.id == id }
+    }
+
     private fun logAll() {
         mountains.forEach{ i("${it}") }
     }

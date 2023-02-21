@@ -10,13 +10,15 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import ie.wit.trekit.R
 import ie.wit.trekit.databinding.ActivityMountainMapsBinding
 import ie.wit.trekit.databinding.ContentMountainMapsBinding
 import ie.wit.trekit.main.MainApp
+import kotlinx.android.synthetic.main.content_mountain_maps.*
 
-class MountainMapsActivity : AppCompatActivity() {
+class MountainMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityMountainMapsBinding
@@ -43,6 +45,7 @@ class MountainMapsActivity : AppCompatActivity() {
 
 
    private fun configureMap() {
+       map.setOnMarkerClickListener(this)
        map.uiSettings.isZoomControlsEnabled = true
        app.mountains.findAll().forEach {
            val loc = LatLng(it.mountainLat, it.mountainLong)
@@ -75,5 +78,15 @@ class MountainMapsActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         contentBinding.mapView.onSaveInstanceState(outState)
+    }
+    override fun onMarkerClick(marker: Marker): Boolean {
+        val tag = marker.tag as Long
+        val mountain = app.mountains.findById(tag)
+        contentBinding.currentName.text = marker.title
+        contentBinding.currentLat.text = mountain!!.mountainLat.toString()
+        contentBinding.currentLong.text = mountain!!.mountainLong.toString()
+
+        return true
+
     }
 }

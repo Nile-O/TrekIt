@@ -26,8 +26,8 @@
     <string name="menu_cancelList">Cancel</string>
     <string name="menu_filterList">Filter List</string>
     <string name="menu_addToFavourites">Add To Favourites</string>
-    <string name="longitude_label">Longitude</string>
-    <string name="latitude_label">Latitude</string>
+    <string name="longitude_label">Longitude:</string>
+    <string name="latitude_label">Latitude:</string>
     <string name="menu_listMountains">View All Mountains on Map</string>
     <string name="title_activity_mountain_maps">Map of All Mountains</string>
     <!-- Strings used for fragments for navigation -->
