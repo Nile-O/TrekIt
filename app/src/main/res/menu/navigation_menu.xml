@@ -2,9 +2,16 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="@string/home" />
-    <item android:title="@string/all_peaks" />
-    <item android:title="@string/favourite_peaks" />
-    <item android:title="@string/climbed_peaks" />
-    <item android:title="@string/about_us" />
+    <item android:id="@+id/item_home"
+        android:title="@string/home" />
+    <item android:id="@+id/item_all"
+        android:title="@string/all_peaks" />
+    <item android:id="@+id/item_favourite"
+        android:title="@string/favourite_peaks" />
+    <item android:id="@+id/item_climbed"
+        android:title="@string/climbed_peaks" />
+    <item android:id="@+id/item_about"
+        android:title="@string/about_us" />
+    <item android:id="@+id/item_logout"
+        android:title="@string/logout" />
 </menu>
