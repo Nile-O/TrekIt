@@ -14,6 +14,9 @@ import ie.wit.trekit.adapters.MountainListener
 import ie.wit.trekit.main.MainApp
 import ie.wit.trekit.databinding.ActivityMountainListBinding
 import ie.wit.trekit.models.MountainModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MountainListActivity : AppCompatActivity(), MountainListener {
 
@@ -33,7 +36,7 @@ class MountainListActivity : AppCompatActivity(), MountainListener {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = MountainAdapter(app.mountains.findAll(), this)
+        updateRecyclerView()
 
         registerRefreshCallback()
         registerMapCallback()
@@ -48,7 +51,7 @@ class MountainListActivity : AppCompatActivity(), MountainListener {
     private fun registerRefreshCallback() {
         refreshIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { binding.recyclerView.adapter?.notifyDataSetChanged() }
+            { binding.recyclerView.adapter!!.notifyDataSetChanged() }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_mountain_list, menu)
@@ -70,6 +73,12 @@ class MountainListActivity : AppCompatActivity(), MountainListener {
     private fun registerMapCallback() {
         mapIntentLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
         {}
+    }
+
+    private fun updateRecyclerView() {
+        GlobalScope.launch(Dispatchers.Main) {
+            binding.recyclerView.adapter = MountainAdapter(app.mountains.findAll(), this@MountainListActivity)
+        }
     }
 
 }

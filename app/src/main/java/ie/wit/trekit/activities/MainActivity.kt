@@ -15,6 +15,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 import ie.wit.trekit.R
 import ie.wit.trekit.databinding.ActivityMainBinding
 import ie.wit.trekit.main.MainApp
@@ -22,6 +23,9 @@ import ie.wit.trekit.models.MountainModel
 import ie.wit.trekit.views.login.LoginView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 import timber.log.Timber.i
@@ -72,7 +76,7 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
 
                 R.id.item_logout -> {
-                    doLogout()
+                    GlobalScope.launch(Dispatchers.IO) { doLogout()}
                     Toast.makeText(this, "Logout", Toast.LENGTH_LONG).show()
                 }
                 R.id.item_climbed -> {
@@ -113,7 +117,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun doLogout() {
+    private suspend fun doLogout() {
+        FirebaseAuth.getInstance().signOut()
+        app?.mountains?.clear()
         val launcherIntent = Intent(this, LoginView::class.java)
         editIntentLauncher.launch(launcherIntent)
     }

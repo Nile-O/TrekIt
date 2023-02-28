@@ -16,7 +16,11 @@ import ie.wit.trekit.R
 import ie.wit.trekit.databinding.ActivityMountainMapsBinding
 import ie.wit.trekit.databinding.ContentMountainMapsBinding
 import ie.wit.trekit.main.MainApp
+import ie.wit.trekit.models.MountainModel
 import kotlinx.android.synthetic.main.content_mountain_maps.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MountainMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
 
@@ -39,12 +43,14 @@ class MountainMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
         contentBinding.mapView.onCreate(savedInstanceState)
         contentBinding.mapView.getMapAsync{
             map = it
-            configureMap()
+            GlobalScope.launch(Dispatchers.Main) {
+                configureMap()
+            }
         }
     }
 
 
-   private fun configureMap() {
+   private suspend fun configureMap() {
        map.setOnMarkerClickListener(this)
        map.uiSettings.isZoomControlsEnabled = true
        app.mountains.findAll().forEach {
@@ -80,13 +86,22 @@ class MountainMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
         contentBinding.mapView.onSaveInstanceState(outState)
     }
     override fun onMarkerClick(marker: Marker): Boolean {
-        val tag = marker.tag as Long
-        val mountain = app.mountains.findById(tag)
-        contentBinding.currentName.text = marker.title
-        contentBinding.currentLat.text = mountain!!.mountainLat.toString()
-        contentBinding.currentLong.text = mountain!!.mountainLong.toString()
-
+        GlobalScope.launch(Dispatchers.Main) {
+            doMarkerSelected(marker)
+        }
         return true
 
+    }
+        private suspend fun doMarkerSelected(marker: Marker) {
+            val tag = marker.tag as Long
+            val mountain: MountainModel? = app.mountains.findByid(tag)
+            if (mountain != null) showMountain(mountain)
+
+        }
+
+    fun showMountain(mountain: MountainModel){
+        contentBinding.currentName.text = mountain.mountainName
+        contentBinding.currentLat.text = mountain!!.mountainLat.toString()
+        contentBinding.currentLong.text = mountain!!.mountainLong.toString()
     }
 }

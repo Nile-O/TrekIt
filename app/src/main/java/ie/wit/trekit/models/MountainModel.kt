@@ -4,7 +4,8 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class MountainModel( var id: Long = 0,
+data class MountainModel( var fbId: String = "",
+                          var id: Long = 0,
                           var mountainName: String = "",
                           var areaName: String = "",
                           var elevation: Double = 0.0,

@@ -27,18 +27,26 @@ class MountainJSONStore(private val context: Context) : MountainStore {
         }
     }
 
-    override fun findAll(): MutableList<MountainModel> {
+    override suspend fun findAll(): MutableList<MountainModel> {
         logAll()
         return mountains
     }
 
-    override fun create(mountain: MountainModel) {
+    override suspend fun create(mountain: MountainModel) {
         mountains.add(mountain)
 
     }
 
-    override fun findById(id: Long): MountainModel? {
-        return mountains.find { it.id == id }
+    override suspend fun findById(fbId: String): MountainModel? {
+        return mountains.find { it.fbId == fbId }
+    }
+    override suspend fun findByid(id: Long): MountainModel? {
+        val foundMountain: MountainModel? = mountains.find { it.id == id }
+        return foundMountain
+    }
+
+    override suspend fun clear(){
+        mountains.clear()
     }
 
 

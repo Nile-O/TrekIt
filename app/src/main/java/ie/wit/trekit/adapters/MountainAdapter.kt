@@ -13,7 +13,7 @@ interface MountainListener {
 
 }
 
-class MountainAdapter constructor(private var mountains: List<MountainModel>, private val listener: MountainListener) :
+class MountainAdapter(private var mountains: List<MountainModel>, private val listener: MountainListener) :
     RecyclerView.Adapter<MountainAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
