@@ -81,7 +81,8 @@ class MountainListActivity : AppCompatActivity(), MountainListener {
 
     private fun updateRecyclerView() {
         GlobalScope.launch(Dispatchers.Main) {
-            binding.recyclerView.adapter = MountainAdapter(app.mountains.findAll(), this@MountainListActivity)
+            val mountains = app.mountains.findAll().filter{ !it.isFavourite}
+            binding.recyclerView.adapter = MountainAdapter(mountains, this@MountainListActivity)
         }
     }
 
