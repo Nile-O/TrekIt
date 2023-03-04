@@ -47,4 +47,6 @@
     <string name="create_account">CREATE ACCOUNT</string>
     <string name="hint_email">email</string>
     <string name="hint_password">password</string>
+    <string name="menu_favouriteList">Favourite List</string>
+    <string name="favouriteListLabel">List of Favourites</string>
 </resources>

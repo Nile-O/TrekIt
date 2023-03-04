@@ -8,10 +8,4 @@
         android:title="@string/menu_cancelList"
         app:showAsAction="always"/>
 
-
-    <item
-        android:id="@+id/item_favourite"
-        android:title="@string/menu_addToFavourites"
-        android:icon="@android:drawable/star_big_on"
-        app:showAsAction="always"/>
 </menu>

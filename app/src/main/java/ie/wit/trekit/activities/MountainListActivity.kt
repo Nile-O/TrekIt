@@ -62,6 +62,10 @@ class MountainListActivity : AppCompatActivity(), MountainListener {
             R.id.item_cancel -> {
                 finish()
             }
+            R.id.item_favouriteList -> {
+                val launcherIntent = Intent(this, FavouriteListActivity::class.java)
+                mapIntentLauncher.launch(launcherIntent)
+            }
             R.id.item_map -> {
                 val launcherIntent = Intent(this, MountainMapsActivity::class.java)
                 mapIntentLauncher.launch(launcherIntent)

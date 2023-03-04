@@ -3,6 +3,10 @@ package ie.wit.trekit.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import ie.wit.trekit.databinding.CardMountainBinding
 import ie.wit.trekit.models.MountainModel
 
@@ -41,3 +45,6 @@ class MountainAdapter(private var mountains: List<MountainModel>, private val li
     }
 
 }
+
+
+

@@ -56,6 +56,18 @@ class MountainFireStore(context: Context) : MountainStore {
         db.addListenerForSingleValueEvent(valueEventListener)
     }
 
+     fun setFavourite(mountain: MountainModel, isFavourite: Boolean) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        val userFavouritesRef = FirebaseDatabase.getInstance("https://trekit-ded67-default-rtdb.firebaseio.com/").getReference("user_favourites/$userId")
+                mountain.isFavourite = isFavourite
+                db.child(mountain.mountainName).setValue(mountain)
+            if (isFavourite) {
+                userFavouritesRef.child(mountain.mountainName).setValue(true)
+            } else {
+                userFavouritesRef.child(mountain.mountainName).removeValue()
+            }
+    }
+
 
 }
 //db.child("users").child(userId).child("mountains")

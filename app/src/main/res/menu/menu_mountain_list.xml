@@ -9,10 +9,11 @@
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/item_filter"
-        android:title="@string/menu_filterList"
-        android:icon="@android:drawable/ic_menu_search"
+        android:id="@+id/item_favouriteList"
+        android:title="@string/menu_favouriteList"
+        android:icon="@android:drawable/btn_star_big_on"
         app:showAsAction="always"/>
+
     <item
         android:id="@+id/item_map"
         android:icon="@android:drawable/ic_menu_mapmode"
