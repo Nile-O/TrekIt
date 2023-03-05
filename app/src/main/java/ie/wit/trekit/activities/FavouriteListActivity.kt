@@ -20,16 +20,18 @@ import ie.wit.trekit.adapters.FavouriteMountainsAdapter
 import ie.wit.trekit.databinding.ActivityFavouriteListBinding
 import ie.wit.trekit.main.MainApp
 import ie.wit.trekit.models.MountainModel
+import kotlinx.android.synthetic.main.activity_favourite_list.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import timber.log.Timber.i
 
 class FavouriteListActivity : AppCompatActivity(), FavMountainListener {
     lateinit var app: MainApp
     private lateinit var binding: ActivityFavouriteListBinding
     private lateinit var refreshIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
-    private lateinit var favouriteMountains: List<MountainModel>
+    private var favouriteMountains = mutableListOf<MountainModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +44,9 @@ class FavouriteListActivity : AppCompatActivity(), FavMountainListener {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
+
+        val adapter = FavouriteMountainsAdapter(favouriteMountains, this)
+        adapter.attachSwipeToDelete(recyclerView)
 
         fetchFavoriteMountains()
 
@@ -82,54 +87,44 @@ class FavouriteListActivity : AppCompatActivity(), FavMountainListener {
             {}
     }
 
-    private fun updateRecyclerView(favouriteMountains: List<MountainModel>) {
-        GlobalScope.launch(Dispatchers.Main) {
-            binding.recyclerView.adapter =
-                FavouriteMountainsAdapter(favouriteMountains, this@FavouriteListActivity)
+    private fun updateRecyclerView(favouriteMountains: MutableList<MountainModel>) {
+            GlobalScope.launch(Dispatchers.Main) {
+                binding.recyclerView.adapter =
+                    FavouriteMountainsAdapter(favouriteMountains, this@FavouriteListActivity)
+            }
         }
-    }
 
     private fun fetchFavoriteMountains() {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
-        val db =
-            FirebaseDatabase.getInstance("https://trekit-ded67-default-rtdb.firebaseio.com/").reference
-        //val userFavourites = ArrayList<MountainModel>()
-        val userFavouritesRef =
-            FirebaseDatabase.getInstance("https://trekit-ded67-default-rtdb.firebaseio.com/")
-                .getReference("user_favourites/$userId")
-        val valueEventListener = object : ValueEventListener {
-            override fun onCancelled(dataSnapshot: DatabaseError) {
-            }
+        val userFavouritesRef = FirebaseDatabase.getInstance("https://trekit-ded67-default-rtdb.firebaseio.com/").getReference("user_favourites/$userId")
 
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val mountains = ArrayList<MountainModel>()
-                for (mountainSnapshot in snapshot.children) {
-                    val mountainId = mountainSnapshot.key
-                    val isFavourite = mountainSnapshot.getValue(Boolean::class.java)
-                    if (isFavourite == true) {
-                        db.child("mountains/$mountainId")
-                            .addListenerForSingleValueEvent(object : ValueEventListener {
-                                override fun onCancelled(databaseError: DatabaseError) {
-                                    Snackbar.make(binding.root, "Database error", Snackbar.LENGTH_LONG)
-                                        .show()
-                                }
+        userFavouritesRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                dataSnapshot.children.forEach { favouriteSnapshot ->
+                    val mountainName = favouriteSnapshot.key
+                    val mountainRef = FirebaseDatabase.getInstance("https://trekit-ded67-default-rtdb.firebaseio.com/").getReference("mountains/$mountainName")
 
-                                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                    val mountain = dataSnapshot.getValue(MountainModel::class.java)
-                                    mountain?.let {
-                                        mountains.add(it)
-                                    }
-                                    favouriteMountains = mountains  // Store the list in a field
-                                    updateRecyclerView(mountains)  // Call updateRecyclerView() once the list is retrieved
-                                }
-                            })
-                    }
+                    mountainRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            val mountain = dataSnapshot.getValue(MountainModel::class.java)
+                            mountain?.let {
+                                favouriteMountains.add(it)
+                                binding.recyclerView.adapter?.notifyDataSetChanged()
+
+                                updateRecyclerView(favouriteMountains)
+                            }
+                        }
+
+                        override fun onCancelled(databaseError: DatabaseError) {
+                            i(databaseError.toException(), "fetchFavoriteMountains:onCancelled")
+                        }
+                    })
                 }
-
             }
-        }
-        userFavouritesRef.addListenerForSingleValueEvent(valueEventListener)
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                i(databaseError.toException(), "fetchFavoriteMountains:onCancelled")
+            }
+        })
     }
 }
-
-

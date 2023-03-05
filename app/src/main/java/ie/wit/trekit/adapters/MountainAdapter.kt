@@ -14,7 +14,6 @@ interface MountainListener {
 
 
     fun onMountainClick(mountain: MountainModel)
-
 }
 
 class MountainAdapter(private var mountains: List<MountainModel>, private val listener: MountainListener) :
@@ -43,6 +42,9 @@ class MountainAdapter(private var mountains: List<MountainModel>, private val li
             }
         }
     }
+
+
+
 
 }
 
