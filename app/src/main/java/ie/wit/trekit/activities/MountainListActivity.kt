@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -65,6 +66,7 @@ class MountainListActivity : AppCompatActivity(), MountainListener {
             R.id.item_favouriteList -> {
                 val launcherIntent = Intent(this, FavouriteListActivity::class.java)
                 mapIntentLauncher.launch(launcherIntent)
+                Toast.makeText(this, "List of Favourites", Toast.LENGTH_LONG).show()
             }
             R.id.item_map -> {
                 val launcherIntent = Intent(this, MountainMapsActivity::class.java)

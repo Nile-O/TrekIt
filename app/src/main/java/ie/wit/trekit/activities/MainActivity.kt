@@ -7,7 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
+import android.widget.Toast.LENGTH_LONG
+import android.widget.Toast.LENGTH_SHORT
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -48,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         app = application as MainApp
 
+
         binding.buttonPeaks.setOnClickListener(View.OnClickListener {
             startActivity(
                 Intent(
@@ -62,10 +66,18 @@ class MainActivity : AppCompatActivity() {
         actionbar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_hiker_foreground)
+
         }
         mDrawerLayout = findViewById(R.id.drawerLayout)
 
         val navigationView: NavigationView = findViewById(R.id.nav_menu)
+        val headerView = navigationView.getHeaderView(0)
+
+        val welcomeTextView: TextView = headerView.findViewById(R.id.action_bar_welcome)
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val userEmail = currentUser?.email
+        welcomeTextView.text = "Welcome $userEmail"
+
         navigationView.setNavigationItemSelectedListener { menuItem ->
             // set item as selected to persist highlight
             menuItem.isChecked = true
@@ -77,20 +89,21 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.item_logout -> {
                     GlobalScope.launch(Dispatchers.IO) { doLogout()}
-                    Toast.makeText(this, "Logout", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Logout", LENGTH_SHORT).show()
                 }
                 R.id.item_climbed -> {
-                    Toast.makeText(this, "Climbed", Toast.LENGTH_LONG).show()
+                   // Toast.makeText(this, "Climbed", LENGTH_SHORT).show()
                 }
                 R.id.item_all -> {
                     doAllPeaks()
-                    Toast.makeText(this, "All", Toast.LENGTH_LONG).show()
+                    //Toast.makeText(this, "All", LENGTH_SHORT).show()
                 }
-                R.id.item_about -> {
-                    Toast.makeText(this, "About", Toast.LENGTH_LONG).show()
+                R.id.item_profile -> {
+                    //Toast.makeText(this, "Profile", LENGTH_SHORT).show()
                 }
                 R.id.item_favourite -> {
-                    Toast.makeText(this, "Favourite", Toast.LENGTH_LONG).show()
+                    doFavouritePeaks()
+                   // Toast.makeText(this, "Favourite", LENGTH_SHORT).show()
                 }
             }
 
@@ -126,6 +139,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun doAllPeaks() {
         val launcherIntent = Intent(this, MountainListActivity::class.java)
+        editIntentLauncher.launch(launcherIntent)
+    }
+
+    private fun doFavouritePeaks() {
+        val launcherIntent = Intent(this, FavouriteListActivity::class.java)
         editIntentLauncher.launch(launcherIntent)
     }
 }

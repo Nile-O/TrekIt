@@ -16,7 +16,5 @@ class MainApp: Application() {
         Timber.plant(Timber.DebugTree())
         mountains = MountainFireStore(applicationContext)
         i("TrekIt started")
-       // mountains.create(MountainModel(1,"One", "About one...", 1200.0))
-        //mountains.create(MountainModel(2,"two", "About one...", 1400.8))
     }
 }

@@ -2,6 +2,7 @@ package ie.wit.trekit.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -76,6 +77,7 @@ class FavouriteMountainsAdapter(private var favouriteMountains: MutableList<Moun
             } else {
                 i("Item Removed")
                 userFavouritesRef.child(mountain.mountainName).removeValue()
+
             }
         }
 
@@ -96,6 +98,8 @@ class FavouriteMountainsAdapter(private var favouriteMountains: MutableList<Moun
                 val position = viewHolder.adapterPosition
                 deleteItem(position)
                 notifyDataSetChanged()
+                Toast.makeText(viewHolder.itemView.context, "Deleted", Toast.LENGTH_LONG).show()
+
             }
         })
 

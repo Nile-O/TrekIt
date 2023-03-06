@@ -49,4 +49,5 @@
     <string name="hint_password">password</string>
     <string name="menu_favouriteList">Favourite List</string>
     <string name="favouriteListLabel">List of Favourites</string>
+    <string name="Profile">Profile</string>
 </resources>

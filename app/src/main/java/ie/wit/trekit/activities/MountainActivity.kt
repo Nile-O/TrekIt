@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.gms.maps.model.LatLng
@@ -20,7 +21,6 @@ import timber.log.Timber
 class MountainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMountainBinding
     var mountain = MountainModel()
-    //var location = Location(52.245696, -7.139102, 15f)
     var db = FirebaseDatabase.getInstance("https://trekit-ded67-default-rtdb.firebaseio.com/").getReference("mountains")
     lateinit var app: MainApp
 
@@ -80,6 +80,7 @@ class MountainActivity : AppCompatActivity() {
         db.child(mountain.mountainName).setValue(mountain)
         if (isFavourite) {
             userFavouritesRef.child(mountain.mountainName).setValue(true)
+            Toast.makeText(this, "Added to Favourites", Toast.LENGTH_SHORT).show()
         } else {
             userFavouritesRef.child(mountain.mountainName).removeValue()
         }
