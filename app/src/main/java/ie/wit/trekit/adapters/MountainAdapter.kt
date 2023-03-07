@@ -43,10 +43,10 @@ class MountainAdapter(private var mountains: List<MountainModel>, private val li
         }
     }
 
-
-
+    fun updateList(filteredMountains: List<MountainModel>) {
+        mountains = filteredMountains
+        notifyDataSetChanged()
+    }
 
 }
-
-
 

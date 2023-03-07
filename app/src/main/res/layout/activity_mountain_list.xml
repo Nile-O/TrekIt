@@ -21,6 +21,12 @@
             android:layout_height="wrap_content"
             app:titleTextColor="@color/white"
             app:titleTextAppearance="@style/Toolbar.TitleText"/>
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:iconifiedByDefault="false"
+            app:actionViewClass="androidx.appcompat.widget.SearchView"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView

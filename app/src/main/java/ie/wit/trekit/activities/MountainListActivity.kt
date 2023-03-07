@@ -1,3 +1,4 @@
+
 package ie.wit.trekit.activities
 
 import android.content.Intent
@@ -5,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+
 import androidx.recyclerview.widget.LinearLayoutManager
 import ie.wit.trekit.R
 import ie.wit.trekit.adapters.MountainAdapter
@@ -41,6 +44,19 @@ class MountainListActivity : AppCompatActivity(), MountainListener {
 
         registerRefreshCallback()
         registerMapCallback()
+
+        val searchView = findViewById<SearchView>(R.id.searchView)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // Filter the list of mountains based on the search query
+                filterMountainList(newText)
+                return true
+            }
+        })
 
     }
 
@@ -85,6 +101,14 @@ class MountainListActivity : AppCompatActivity(), MountainListener {
         GlobalScope.launch(Dispatchers.Main) {
             val mountains = app.mountains.findAll().filter{ !it.isFavourite}
             binding.recyclerView.adapter = MountainAdapter(mountains, this@MountainListActivity)
+        }
+    }
+
+    private fun filterMountainList(query: String?) {
+        GlobalScope.launch(Dispatchers.Main) {
+            val filteredList = app.mountains.findAll().filter { !it.isFavourite }
+                .filter { it.mountainName.contains(query ?: "", true) }
+            (binding.recyclerView.adapter as MountainAdapter).updateList(filteredList)
         }
     }
 
