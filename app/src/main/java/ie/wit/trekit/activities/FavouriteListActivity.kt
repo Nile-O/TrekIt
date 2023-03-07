@@ -25,6 +25,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber.i
+import android.widget.SearchView
 
 class FavouriteListActivity : AppCompatActivity(), FavMountainListener {
     lateinit var app: MainApp
@@ -52,6 +53,21 @@ class FavouriteListActivity : AppCompatActivity(), FavMountainListener {
 
         registerRefreshCallback()
         registerMapCallback()
+
+        val searchView = findViewById<SearchView>(R.id.searchView2)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // Filter the list of mountains based on the search query
+                filterMountainList(newText)
+                return true
+            }
+        })
+
+
 
     }
 
@@ -127,4 +143,11 @@ class FavouriteListActivity : AppCompatActivity(), FavMountainListener {
             }
         })
     }
+private fun filterMountainList(query: String?) {
+    GlobalScope.launch(Dispatchers.Main) {
+        val filteredList = favouriteMountains.filter { it.mountainName.contains(query ?: "", true) }
+            .filter { it.mountainName.contains(query ?: "", true) }
+        (binding.recyclerView.adapter as FavouriteMountainsAdapter).updateList(filteredList)
+    }
+}
 }

@@ -81,6 +81,11 @@ class FavouriteMountainsAdapter(private var favouriteMountains: MutableList<Moun
             }
         }
 
+    fun updateList(filteredMountains: List<MountainModel>) {
+        favouriteMountains = filteredMountains as MutableList<MountainModel>
+        notifyDataSetChanged()
+    }
+
 
     fun attachSwipeToDelete(recyclerView: RecyclerView) {
         itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
