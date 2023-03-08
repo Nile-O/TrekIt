@@ -7,14 +7,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import ie.wit.trekit.R
 import ie.wit.trekit.databinding.ActivityMountainBinding
 import ie.wit.trekit.main.MainApp
-import ie.wit.trekit.models.MountainFireStore
 import ie.wit.trekit.models.MountainModel
 import timber.log.Timber
 
@@ -54,13 +51,16 @@ class MountainActivity : AppCompatActivity() {
             }
 
         }
+        onResume()
     }
-
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_mountain_activity, menu)
+        val favouriteItem = menu.findItem(R.id.item_favourite)
+        favouriteItem.isVisible = mountain.isFavourite.not()
         return super.onCreateOptionsMenu(menu)
     }
+
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_cancel -> {
@@ -73,10 +73,32 @@ class MountainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    //on Resume to ensure add to favourites not visible if mountain already on favourite list
+    override fun onResume() {
+        super.onResume()
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        val userFavouritesRef = FirebaseDatabase.getInstance("https://trekit-ded67-default-rtdb.firebaseio.com/")
+            .getReference("user_favourites/$userId")
+        userFavouritesRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                binding.toolbar.menu.findItem(R.id.item_favourite).isVisible =
+                    !snapshot.child(mountain.mountainName).exists()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Timber.e(error.toException(), "Failed to read user favourites")
+            }
+        })
+    }
+
+    //set the mountain as favourite and add to separate list
+
     private fun setFavourite(mountain: MountainModel, isFavourite: Boolean) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         val userFavouritesRef = FirebaseDatabase.getInstance("https://trekit-ded67-default-rtdb.firebaseio.com/").getReference("user_favourites/$userId")
         mountain.isFavourite = isFavourite
+        val favouriteIcon = binding.toolbar.menu.findItem(R.id.item_favourite)
+        favouriteIcon.isVisible = !isFavourite
         db.child(mountain.mountainName).setValue(mountain)
         if (isFavourite) {
             userFavouritesRef.child(mountain.mountainName).setValue(true)
@@ -85,8 +107,5 @@ class MountainActivity : AppCompatActivity() {
             userFavouritesRef.child(mountain.mountainName).removeValue()
         }
     }
-
-
-
 
 }
