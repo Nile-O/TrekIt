@@ -50,4 +50,10 @@
     <string name="menu_favouriteList">Favourite List</string>
     <string name="favouriteListLabel">List of Favourites</string>
     <string name="Profile">Profile</string>
+    <string name="menu_addToClimbed">Add To Climbed</string>
+    <string name="hint_mountainName">Mountain Name</string>
+    <string name="date_of_climb">Date of Climb:</string>
+    <string name="time_taken">Time Taken (hh:mm):</string>
+    <string name="save">Save</string>
+    <string name="duration">Duration</string>
 </resources>

@@ -12,6 +12,12 @@
     <item
         android:id="@+id/item_favourite"
         android:title="@string/menu_addToFavourites"
-        android:icon="@android:drawable/star_big_on"
+        android:icon="@drawable/ic_favourite"
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/item_climbed"
+        android:icon="@drawable/ic_hiker_foreground"
+        android:title="@string/menu_addToClimbed"
+        app:showAsAction="always" />
 </menu>

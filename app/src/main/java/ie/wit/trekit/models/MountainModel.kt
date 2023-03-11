@@ -2,6 +2,7 @@ package ie.wit.trekit.models
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import java.util.*
 
 @Parcelize
 data class MountainModel( var fbId: String = "",
@@ -13,5 +14,9 @@ data class MountainModel( var fbId: String = "",
                           var mountainLong: Double = 0.0,
                           var isFavourite: Boolean = false) : Parcelable
 
-//@Parcelize
-//data class Location(var lat: Double = 0.0, var long: Double = 0.0, var zoom: Float = 0f) : Parcelable
+@Parcelize
+data class ClimbedMountain(
+    val mountainName: String = "",
+    val dateClimbed: String = "",
+    val duration: Int = 0
+) : Parcelable

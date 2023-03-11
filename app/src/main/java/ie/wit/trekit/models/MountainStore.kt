@@ -7,6 +7,7 @@ interface MountainStore {
         suspend fun findById(fbId:String) : MountainModel?
         suspend fun findByid(id: Long) : MountainModel?
         suspend fun clear()
+    abstract suspend fun findOneMountainByName(mountainName: String): MountainModel?
 
 
 }

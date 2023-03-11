@@ -25,6 +25,11 @@ class MountainMemStore : MountainStore {
     override suspend fun clear(){
         mountains.clear()
     }
+
+    override suspend fun findOneMountainByName(mountainName: String): MountainModel? {
+        TODO("Not yet implemented")
+    }
+
     private fun logAll() {
         mountains.forEach{ i("${it}") }
     }

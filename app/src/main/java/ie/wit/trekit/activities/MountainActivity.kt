@@ -1,17 +1,18 @@
 package ie.wit.trekit.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import ie.wit.trekit.R
 import ie.wit.trekit.databinding.ActivityMountainBinding
 import ie.wit.trekit.main.MainApp
+import ie.wit.trekit.models.ClimbedMountain
 import ie.wit.trekit.models.MountainModel
 import timber.log.Timber
 
@@ -30,9 +31,10 @@ class MountainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         setContentView(binding.root)
         app = application as MainApp
+        //mountain = intent.hasExtra("mountain")!! as MountainModel
 
 
-        if (intent.hasExtra("mountain_show")) {
+       if (intent.hasExtra("mountain_show")) {
             mountain = intent.extras?.getParcelable("mountain_show")!!
             binding.mountainName.text = mountain.mountainName
             binding.areaName.text = mountain.areaName
@@ -49,6 +51,24 @@ class MountainActivity : AppCompatActivity() {
                     mapActivityIntent.putExtra("location1", long)
                 startActivity(mapActivityIntent)
             }
+       } else
+                if(intent.hasExtra("mountain")){
+                    mountain = intent.extras?.getParcelable("mountain")!!
+                    binding.mountainName.text = mountain.mountainName
+                    binding.areaName.text = mountain.areaName
+                    binding.elevation.text = mountain.elevation.toString()
+                    binding.mountainLat.text = mountain.mountainLat.toString()
+                    binding.mountainLong.text = mountain.mountainLong.toString()
+
+
+                    binding.mountainLocation.setOnClickListener{
+                        val lat = mountain.mountainLat.toString()
+                        val long = mountain.mountainLong.toString()
+                        val mapActivityIntent = Intent(this, MapActivity::class.java)
+                        mapActivityIntent.putExtra("location", lat)
+                        mapActivityIntent.putExtra("location1", long)
+                        startActivity(mapActivityIntent)
+           }
 
         }
         onResume()
@@ -68,6 +88,9 @@ class MountainActivity : AppCompatActivity() {
             }
             R.id.item_favourite -> {
                 setFavourite(mountain,true)
+            }
+            R.id.item_climbed-> {
+                onAddToClimbedClicked()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -106,6 +129,13 @@ class MountainActivity : AppCompatActivity() {
         } else {
             userFavouritesRef.child(mountain.mountainName).removeValue()
         }
+    }
+
+    private fun onAddToClimbedClicked(){
+        val name = mountain.mountainName
+        val intent = Intent(this, AddClimbedDetailsActivity::class.java)
+        intent.putExtra("mountain_name", name)
+        startActivity(intent)
     }
 
 }

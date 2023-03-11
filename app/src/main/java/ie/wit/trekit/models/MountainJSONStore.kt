@@ -49,6 +49,10 @@ class MountainJSONStore(private val context: Context) : MountainStore {
         mountains.clear()
     }
 
+    override suspend fun findOneMountainByName(mountainName: String): MountainModel? {
+        TODO("Not yet implemented")
+    }
+
 
     private fun deserialize() {
         val jsonString = read(context, JSON_FILE)

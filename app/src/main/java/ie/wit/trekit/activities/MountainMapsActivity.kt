@@ -99,7 +99,7 @@ class MountainMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
 
         }
 
-    fun showMountain(mountain: MountainModel){
+    private fun showMountain(mountain: MountainModel){
         contentBinding.currentName.text = mountain.mountainName
         contentBinding.currentLat.text = mountain!!.mountainLat.toString()
         contentBinding.currentLong.text = mountain!!.mountainLong.toString()

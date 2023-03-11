@@ -50,16 +50,9 @@ class FavouriteMountainsAdapter(private var favouriteMountains: MutableList<Moun
     fun deleteItem(position: Int) {
 
             val mountain = favouriteMountains[position]
-            //  favouriteMountains =
-            //    favouriteMountains.filter { it.fbId != mountain.fbId } as MutableList<MountainModel>
-            //favouriteMountains.removeAt(position)
+
             deleteFavouriteFromFirebase(mountain, false)
 
-            //val userId = FirebaseAuth.getInstance().currentUser?.uid
-            //val db = FirebaseDatabase.getInstance("https://trekit-ded67-default-rtdb.firebaseio.com/").reference
-            //val mountainRef = db.child("user_favourites/$userId").child(mountain.id.toString())
-            // mountainRef.removeValue()
-            //db.child("user_favourites").child(userId!!).child(mountain.id.toString()).removeValue()
 
             notifyItemRemoved(position)
 

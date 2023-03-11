@@ -12,10 +12,14 @@ class MountainFireStore(context: Context) : MountainStore {
     lateinit var db: DatabaseReference
     lateinit var st: StorageReference
 
+
     override suspend fun findAll(): List<MountainModel> {
         return mountains
     }
 
+    override suspend fun findOneMountainByName(mountainName: String): MountainModel? {
+        return mountains.find { it.mountainName == mountainName }
+    }
     override suspend fun findById(fbId: String): MountainModel? {
         return mountains.find { it.fbId == fbId }
     }
@@ -52,23 +56,12 @@ class MountainFireStore(context: Context) : MountainStore {
         userId = FirebaseAuth.getInstance().currentUser!!.uid
         st = FirebaseStorage.getInstance().reference
         db = FirebaseDatabase.getInstance("https://trekit-ded67-default-rtdb.firebaseio.com/").getReference("mountains")
-        //mountains.clear()
         db.addListenerForSingleValueEvent(valueEventListener)
     }
 
-     fun setFavourite(mountain: MountainModel, isFavourite: Boolean) {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid
-        val userFavouritesRef = FirebaseDatabase.getInstance("https://trekit-ded67-default-rtdb.firebaseio.com/").getReference("user_favourites/$userId")
-                mountain.isFavourite = isFavourite
-                db.child(mountain.mountainName).setValue(mountain)
-            if (isFavourite) {
-                userFavouritesRef.child(mountain.mountainName).setValue(true)
-            } else {
-                userFavouritesRef.child(mountain.mountainName).removeValue()
-            }
+    fun addClimbedMountain(fbId: String, climbedMountain: ClimbedMountain) {
+        db.child("users").child(userId).child("climbed_mountains").child(fbId).setValue(climbedMountain)
+
+
     }
-
-
 }
-//db.child("users").child(userId).child("mountains")
-//.addListenerForSingleValueEvent(valueEventListener)
