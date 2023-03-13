@@ -85,14 +85,15 @@ class ClimbedListActivity : AppCompatActivity(), ClimbedMountainListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_favourite_list, menu)
+        menuInflater.inflate(R.menu.menu_climbed_list, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.item_cancel -> {
-                finish()
+            R.id.item_home -> {
+                val launcherIntent = Intent(this, MainActivity::class.java)
+                mapIntentLauncher.launch(launcherIntent)
             }
         }
         return super.onOptionsItemSelected(item)

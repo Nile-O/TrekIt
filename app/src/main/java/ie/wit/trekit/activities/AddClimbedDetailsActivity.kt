@@ -23,6 +23,7 @@ import timber.log.Timber.i
 import java.util.*
 
 
+@Suppress("NAME_SHADOWING")
 class AddClimbedDetailsActivity : AppCompatActivity() {
     private var datePickerDialog: DatePickerDialog? = null
     private var dateButton: Button? = null
@@ -59,7 +60,7 @@ class AddClimbedDetailsActivity : AppCompatActivity() {
             val minutes = minutesTakenPicker.value
 
             val duration = hours * 60 + minutes
-            //val durationInt = duration.toInt()// Duration in minutes
+
             val dateClimbed = dateButton?.text.toString()
             //combining the mountainName, date and duration to  a climbedMountain object
             val climbedMountain = ClimbedMountain(mountainName, dateClimbed, duration)
