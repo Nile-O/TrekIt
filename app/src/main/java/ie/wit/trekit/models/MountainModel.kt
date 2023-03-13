@@ -18,5 +18,7 @@ data class MountainModel( var fbId: String = "",
 data class ClimbedMountain(
     val mountainName: String = "",
     val dateClimbed: String = "",
-    val duration: Int = 0
+    val duration: Int = 0,
+    var key: String? = null
+
 ) : Parcelable

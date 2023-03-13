@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import ie.wit.trekit.R
 import ie.wit.trekit.models.ClimbedMountain
+import ie.wit.trekit.models.MountainModel
 import kotlinx.android.synthetic.main.activity_add_climbed_details.*
 import timber.log.Timber.i
 import java.util.*
@@ -57,12 +58,12 @@ class AddClimbedDetailsActivity : AppCompatActivity() {
             val hours = hoursTakenPicker.value
             val minutes = minutesTakenPicker.value
 
-            val duration = hours * 60 + minutes // Duration in minutes
-            val date = dateButton?.text.toString()
+            val duration = hours * 60 + minutes
+            //val durationInt = duration.toInt()// Duration in minutes
+            val dateClimbed = dateButton?.text.toString()
             //combining the mountainName, date and duration to  a climbedMountain object
-
-            val climbedMountain = ClimbedMountain(mountainName, date, duration)
-            i("ClimbedMountain: $climbedMountain")
+            val climbedMountain = ClimbedMountain(mountainName, dateClimbed, duration)
+            i("ClimbedMountain: $mountainName on $dateClimbed and it took $duration")
             saveClimbedMountain(climbedMountain)
 
 
@@ -76,6 +77,7 @@ class AddClimbedDetailsActivity : AppCompatActivity() {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         val userClimbedMountainsRef = FirebaseDatabase.getInstance("https://trekit-ded67-default-rtdb.firebaseio.com/").getReference("user_climbed_mountains/$userId")
         val key = userClimbedMountainsRef.push().key
+        climbedMountain.key = key
         if (key != null) {
             userClimbedMountainsRef.child(key).setValue(climbedMountain)
                 .addOnSuccessListener {
@@ -85,7 +87,9 @@ class AddClimbedDetailsActivity : AppCompatActivity() {
                 .addOnFailureListener {
                     Toast.makeText(this, "Failed to save climbed mountain details", Toast.LENGTH_SHORT).show()
                 }
+            i("KEY $key")
         }
+
     }
 
     private fun openClimbedList() {

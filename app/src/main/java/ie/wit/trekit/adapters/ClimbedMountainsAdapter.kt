@@ -2,16 +2,19 @@ package ie.wit.trekit.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import ie.wit.trekit.R
+import ie.wit.trekit.activities.AddClimbedDetailsActivity
 import ie.wit.trekit.databinding.CardClimbedMountainBinding
 import ie.wit.trekit.models.ClimbedMountain
-import ie.wit.trekit.models.MountainModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import timber.log.Timber.i
 
 interface ClimbedMountainListener {
     suspend fun onClimbedMountainClick(mountain: ClimbedMountain)
@@ -45,16 +48,18 @@ class ClimbedMountainsAdapter(private var climbedMountains: MutableList<ClimbedM
     }
 
     fun deleteItem(position: Int) {
-        val mountain = climbedMountains[position]
-        deleteClimbedFromFirebase(mountain)
+        val climbedMountain = climbedMountains[position]
+        climbedMountain.key?.let { deleteClimbedFromFirebase(it) }
         climbedMountains.removeAt(position)
         notifyItemRemoved(position)
+        notifyItemRangeChanged(position, climbedMountains.size - position)
     }
 
-    private fun deleteClimbedFromFirebase(mountain: ClimbedMountain) {
+    private fun deleteClimbedFromFirebase(key: String) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
-        val userClimbedRef = FirebaseDatabase.getInstance("https://trekit-ded67-default-rtdb.firebaseio.com/").getReference("user_climbed/$userId")
-        userClimbedRef.child(mountain.mountainName).removeValue()
+        val userClimbedRef = FirebaseDatabase.getInstance("https://trekit-ded67-default-rtdb.firebaseio.com/").getReference("user_climbed_mountains/$userId")
+        userClimbedRef.child(key).removeValue()
+        i("item deleted $key")
     }
 
     fun updateList(newList: List<ClimbedMountain>) {
@@ -77,6 +82,7 @@ class ClimbedMountainsAdapter(private var climbedMountains: MutableList<ClimbedM
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 deleteItem(position)
+                notifyDataSetChanged()
             }
         })
         itemTouchHelper.attachToRecyclerView(recyclerView)

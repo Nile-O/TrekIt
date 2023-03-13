@@ -21,7 +21,6 @@ import ie.wit.trekit.adapters.ClimbedMountainsAdapter
 import ie.wit.trekit.databinding.ActivityClimbedListBinding
 import ie.wit.trekit.main.MainApp
 import ie.wit.trekit.models.ClimbedMountain
-import ie.wit.trekit.models.MountainModel
 import kotlinx.android.synthetic.main.activity_climbed_list.recyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -70,11 +69,6 @@ class ClimbedListActivity : AppCompatActivity(), ClimbedMountainListener {
         })
     }
 
-    //override fun onMountainClick(mountain: ClimbedMountain) {
-      //  val launcherIntent = Intent(this, MountainActivity::class.java)
-        //launcherIntent.putExtra("mountain", mountain)
-       // refreshIntentLauncher.launch(launcherIntent)
-   // }
     override suspend fun onClimbedMountainClick(climbedMountain: ClimbedMountain) {
         val mountain = app.mountains.findOneMountainByName(climbedMountain.mountainName)
         val mountainIntent = Intent(this, MountainActivity::class.java).apply {

@@ -92,18 +92,16 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(this, "Logout", LENGTH_SHORT).show()
                 }
                 R.id.item_climbed -> {
-                   // Toast.makeText(this, "Climbed", LENGTH_SHORT).show()
+                    doClimbedPeaks()
                 }
                 R.id.item_all -> {
                     doAllPeaks()
-                    //Toast.makeText(this, "All", LENGTH_SHORT).show()
                 }
                 R.id.item_profile -> {
                     //Toast.makeText(this, "Profile", LENGTH_SHORT).show()
                 }
                 R.id.item_favourite -> {
                     doFavouritePeaks()
-                   // Toast.makeText(this, "Favourite", LENGTH_SHORT).show()
                 }
             }
 
@@ -144,6 +142,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun doFavouritePeaks() {
         val launcherIntent = Intent(this, FavouriteListActivity::class.java)
+        editIntentLauncher.launch(launcherIntent)
+    }
+
+    private fun doClimbedPeaks() {
+        val launcherIntent = Intent(this, ClimbedListActivity::class.java)
         editIntentLauncher.launch(launcherIntent)
     }
 }
