@@ -12,8 +12,8 @@
     <string name="area_name">Area Name</string>
     <string name="mountainListLabel">List of Mountains</string>
     <string name="welcome_to_trek_it">Welcome to Trek It</string>
-    <string name="peaksBlurb">Visit our list of peaks to find out information about the highest 100 peaks in Ireland.</string>
-    <string name="use_map_blurb">Use the map to navigate to the peak and get started on your climb!</string>
+    <string name="peaksBlurb">Visit our list of peaks to find out information about the highest 100 peaks in Ireland. Select a peak to view it\'s details.View the mountain\'s location on the map to navigate to the peak and get started on your climb!</string>
+    <string name="use_map_blurb">View the mountain\'s location on the map to navigate to the peak and get started on your climb!</string>
     <string name="info_blurb">Select a peak to view it\'s details.</string>
     <string name="content_desc_welcome_image">Image of mountains, a valley and cloudy sky</string>
     <string name="_100_peaks">100 Peaks</string>
@@ -57,4 +57,6 @@
     <string name="save">Save</string>
     <string name="duration">Duration</string>
     <string name="menu_home">Home</string>
+    <string name="the_number_of_mountains_you_have_climbed_is">The number of mountains you have climbed is:</string>
+    <string name="_0">0</string>
 </resources>

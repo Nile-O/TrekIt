@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
@@ -51,21 +52,45 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         app = application as MainApp
 
+        var saveBtn = findViewById<Button>(R.id.button1)
+        var faveBtn = findViewById<Button>(R.id.button2)
+        var climbBtn = findViewById<Button>(R.id.button3)
 
-        binding.buttonPeaks.setOnClickListener(View.OnClickListener {
+        button1.setOnClickListener {
             startActivity(
                 Intent(
                     this,
                     MountainListActivity::class.java
                 )
             )
-        })
+        }
+
+        button2.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    FavouriteListActivity::class.java
+                )
+            )
+        }
+
+        button3.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    ClimbedListActivity::class.java
+                )
+            )
+        }
+
+
+
         registerEditCallback()
 
         val actionbar: androidx.appcompat.app.ActionBar? = supportActionBar
         actionbar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_hiker_foreground)
+            setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
 
         }
         mDrawerLayout = findViewById(R.id.drawerLayout)
