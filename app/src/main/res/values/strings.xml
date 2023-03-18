@@ -57,6 +57,7 @@
     <string name="save">Save</string>
     <string name="duration">Duration</string>
     <string name="menu_home">Home</string>
-    <string name="the_number_of_mountains_you_have_climbed_is">The number of mountains you have climbed is:</string>
+    <string name="features">Statistics will be available here SOON!</string>
     <string name="_0">0</string>
+    <string name="mins">mins</string>
 </resources>

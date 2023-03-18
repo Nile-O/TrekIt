@@ -1,20 +1,16 @@
 package ie.wit.trekit.activities
 
-import android.app.ActionBar
-import android.app.Activity
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
 import android.widget.Toast.LENGTH_SHORT
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -23,16 +19,10 @@ import com.google.firebase.auth.FirebaseAuth
 import ie.wit.trekit.R
 import ie.wit.trekit.databinding.ActivityMainBinding
 import ie.wit.trekit.main.MainApp
-import ie.wit.trekit.models.MountainModel
 import ie.wit.trekit.views.login.LoginView
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import timber.log.Timber.DebugTree
-import timber.log.Timber.i
 
 
 class MainActivity : AppCompatActivity() {
@@ -44,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var editIntentLauncher: ActivityResultLauncher<Intent>
 
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -52,11 +43,11 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         app = application as MainApp
 
-        var saveBtn = findViewById<Button>(R.id.button1)
-        var faveBtn = findViewById<Button>(R.id.button2)
-        var climbBtn = findViewById<Button>(R.id.button3)
+        val allBtn = findViewById<Button>(R.id.allBtn)
+        val faveBtn = findViewById<Button>(R.id.faveBtn)
+        val climbBtn = findViewById<Button>(R.id.climbBtn)
 
-        button1.setOnClickListener {
+        allBtn.setOnClickListener {
             startActivity(
                 Intent(
                     this,
@@ -65,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        button2.setOnClickListener {
+        faveBtn.setOnClickListener {
             startActivity(
                 Intent(
                     this,
@@ -74,7 +65,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        button3.setOnClickListener {
+        climbBtn.setOnClickListener {
             startActivity(
                 Intent(
                     this,
@@ -82,8 +73,6 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         }
-
-
 
         registerEditCallback()
 
@@ -123,7 +112,7 @@ class MainActivity : AppCompatActivity() {
                     doAllPeaks()
                 }
                 R.id.item_profile -> {
-                    //Toast.makeText(this, "Profile", LENGTH_SHORT).show()
+                    Toast.makeText(this, "Profile features coming soon!", LENGTH_SHORT).show()
                 }
                 R.id.item_favourite -> {
                     doFavouritePeaks()

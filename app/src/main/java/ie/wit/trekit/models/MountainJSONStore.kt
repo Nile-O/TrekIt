@@ -9,7 +9,7 @@ import timber.log.Timber
 import java.lang.reflect.Type
 import java.util.*
 
-const val JSON_FILE = "convertcsv.json"
+const val JSON_FILE = "100peaks.json"
 val gsonBuilder = GsonBuilder().registerTypeAdapter(Uri::class.java, UriParser()).create()
 val listType: Type = object : TypeToken<ArrayList<MountainModel>>() {}.type
 
