@@ -1,8 +1,11 @@
 package ie.wit.trekit.activities
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -13,27 +16,34 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import ie.wit.trekit.R
+import ie.wit.trekit.adapters.MountainAdapter
+import ie.wit.trekit.adapters.MountainListener
 import ie.wit.trekit.databinding.ActivityMountainMapsBinding
 import ie.wit.trekit.databinding.ContentMountainMapsBinding
 import ie.wit.trekit.main.MainApp
 import ie.wit.trekit.models.MountainModel
+import kotlinx.android.synthetic.main.activity_mountain_list.*
 import kotlinx.android.synthetic.main.content_mountain_maps.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class MountainMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
+class MountainMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener{
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityMountainMapsBinding
     private lateinit var contentBinding: ContentMountainMapsBinding
     lateinit var map: GoogleMap
+    private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMountainMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+
 
         setSupportActionBar(binding.toolbar)
 
@@ -47,6 +57,8 @@ class MountainMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
                 configureMap()
             }
         }
+
+
     }
 
 
@@ -58,6 +70,7 @@ class MountainMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
            val options = MarkerOptions().title(it.mountainName).position(loc)
            map.addMarker(options)?.tag = it.id
            map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 6f))
+
        }
    }
 
@@ -103,5 +116,12 @@ class MountainMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
         contentBinding.currentName.text = mountain.mountainName
         contentBinding.currentLat.text = mountain!!.mountainLat.toString()
         contentBinding.currentLong.text = mountain!!.mountainLong.toString()
+
+        contentBinding.currentName.setOnClickListener {
+            val intent = Intent(this, MountainActivity::class.java)
+            intent.putExtra("mountain_show", mountain)
+            startActivity(intent)
+        }
     }
+
 }

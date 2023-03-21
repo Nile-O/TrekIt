@@ -20,6 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/currentMountain"
         android:layout_width="400dp"
         android:layout_height="150dp"
         android:layout_marginTop="20dp"
@@ -36,6 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
+                android:clickable="true"
                 android:text="@string/mountain_name"
                 android:textSize="34sp"
                 app:layout_constraintEnd_toEndOf="parent"
