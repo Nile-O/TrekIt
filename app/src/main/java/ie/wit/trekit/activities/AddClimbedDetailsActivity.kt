@@ -17,7 +17,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import ie.wit.trekit.R
 import ie.wit.trekit.models.ClimbedMountain
-import ie.wit.trekit.models.MountainModel
 import kotlinx.android.synthetic.main.activity_add_climbed_details.*
 import timber.log.Timber.i
 import java.util.*
@@ -116,9 +115,9 @@ class AddClimbedDetailsActivity : AppCompatActivity() {
 
     private fun initDatePicker() {
         val dateSetListener =
-            OnDateSetListener { datePicker, year, month, day ->
+            OnDateSetListener { _, year, month, day ->
                 var month = month
-                month = month + 1
+                month += 1
                 val date: String = makeDateString(day, month, year)
                 dateButton!!.text = date
             }
