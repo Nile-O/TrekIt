@@ -36,4 +36,12 @@
         android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_baseline_query_stats_24" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

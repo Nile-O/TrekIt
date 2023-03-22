@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -33,6 +34,8 @@ class ClimbedListActivity : AppCompatActivity(), ClimbedMountainListener {
     private lateinit var refreshIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
     private var climbedMountains = mutableListOf<ClimbedMountain>()
+    private var fastestClimb: ClimbedMountain? = null
+    private var totalClimbs: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +70,24 @@ class ClimbedListActivity : AppCompatActivity(), ClimbedMountainListener {
                 return true
             }
         })
+
+        binding.floatingActionButton.setOnClickListener {
+            var totalClimbs = totalClimbs()
+            var totalTime = getTotalTime()
+            var averageTime = getAverageTime()
+            var mostClimbed =  getMostClimbedMountain(climbedMountains)
+            var fastestClimb = fastestClimb(climbedMountains)
+            val intent = Intent(this, StatsActivity::class.java)
+                intent.putExtra("totalTime", totalTime)
+                intent.putExtra("averageTime", averageTime)
+                intent.putExtra("totalClimbs", totalClimbs)
+                intent.putExtra("fastestClimb", fastestClimb)
+                intent.putExtra("mostClimbed", mostClimbed)
+
+            startActivity(intent)
+        }
+
+
     }
 
     override suspend fun onClimbedMountainClick(climbedMountain: ClimbedMountain) {
@@ -124,17 +145,19 @@ class ClimbedListActivity : AppCompatActivity(), ClimbedMountainListener {
                     val climbedMountain = climbedSnapshot.getValue(ClimbedMountain::class.java)
                     climbedMountain?.let {
                         climbedMountains.add(it)
-                        binding.recyclerView.adapter?.notifyDataSetChanged()
 
-                        updateRecyclerView(climbedMountains)
-                    }
+                        }
                 }
+                updateRecyclerView(climbedMountains)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 i(databaseError.toException(), "fetchClimbedMountains:onCancelled")
             }
         })
+        //showClimbingStats(climbedMountains)
+
+
     }
     private fun filterMountainList(query: String?) {
         GlobalScope.launch(Dispatchers.Main) {
@@ -144,6 +167,72 @@ class ClimbedListActivity : AppCompatActivity(), ClimbedMountainListener {
     }
 }
 
+    private fun showClimbingStats(climbedMountains: List<ClimbedMountain>) {
+        var totalClimbs = climbedMountains.size
+        var fastestClimb: ClimbedMountain? = null
+        for (climbedMountain in climbedMountains) {
+            if (fastestClimb == null || climbedMountain.duration < fastestClimb.duration) {
+                fastestClimb = climbedMountain
+            }
+        }
+        val fastestClimbText = fastestClimb?.let {
+            "Fastest climb: ${it.mountainName} (${it.duration} minutes)"
+        } ?: "No climbs recorded"
+        val totalClimbsText = "Total climbs: $totalClimbs"
+
+
+    }
+
+    private fun totalClimbs():Int {
+        var totalClimbs = climbedMountains.size
+        return totalClimbs
+    }
+
+    private fun fastestClimb(climbedMountains: List<ClimbedMountain>): String {
+        if (climbedMountains.isEmpty()) {
+            return "No mountains climbed yet"
+        }
+        var fastestClimb: ClimbedMountain? = null
+        for (climbedMountain in climbedMountains) {
+            if (fastestClimb == null || climbedMountain.duration < fastestClimb.duration) {
+                fastestClimb = climbedMountain
+            }
+        }
+        return "${fastestClimb?.mountainName} (${fastestClimb?.duration} minutes)"
+    }
+
+    private fun getTotalTime(): Int {
+        var totalTime = 0
+        for (climbedMountain in climbedMountains) {
+            totalTime += climbedMountain.duration
+        }
+        return totalTime
+    }
+
+    private fun getAverageTime(): Double {
+        val totalTime = getTotalTime()
+        return if (totalTime > 0) {
+            totalTime.toDouble() / climbedMountains.size
+        } else {
+            0.0
+        }
+    }
+    private fun getMostClimbedMountain(climbedMountains: List<ClimbedMountain>): String {
+        if (climbedMountains.isEmpty()) {
+            return "No mountains climbed yet"
+        }
+
+        val mountainCounts = mutableMapOf<String, Int>()
+        for (climbedMountain in climbedMountains) {
+            val count = mountainCounts.getOrDefault(climbedMountain.mountainName, 0)
+            mountainCounts[climbedMountain.mountainName] = count + 1
+        }
+
+        val mostClimbedMountainName = mountainCounts.maxByOrNull { it.value }?.key
+        return mostClimbedMountainName?.let {
+            "$it (${mountainCounts[it]} climbs)"
+        } ?: "No mountains climbed yet"
+    }
 
 
 }

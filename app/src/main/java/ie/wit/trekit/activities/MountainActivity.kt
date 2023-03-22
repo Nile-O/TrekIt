@@ -12,7 +12,6 @@ import com.google.firebase.database.*
 import ie.wit.trekit.R
 import ie.wit.trekit.databinding.ActivityMountainBinding
 import ie.wit.trekit.main.MainApp
-import ie.wit.trekit.models.ClimbedMountain
 import ie.wit.trekit.models.MountainModel
 import timber.log.Timber
 

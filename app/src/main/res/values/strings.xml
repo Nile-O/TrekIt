@@ -60,4 +60,6 @@
     <string name="features">Statistics will be available here SOON!</string>
     <string name="_0">0</string>
     <string name="mins">mins</string>
+    <string name="mountainsClimbed">Mountains Climbed:</string>
+    <string name="menu_stats">Climbed Statistics</string>
 </resources>
