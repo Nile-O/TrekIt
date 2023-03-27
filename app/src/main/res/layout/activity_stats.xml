@@ -24,107 +24,113 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="60dp"
+    <GridLayout
+        android:layout_width="386dp"
+        android:layout_height="667dp"
+        android:columnCount="2"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:rowCount="3"
+        android:useDefaultMargins="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="10dp">
+            android:layout_width="149dp"
+            android:layout_height="153dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_hiker_foreground" />
 
             <TextView
                 android:id="@+id/totalClimbs"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="Total Climbed:" />
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray_500" />
-
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="10dp">
+            android:layout_width="153dp"
+            android:layout_height="152dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="54dp"
+                android:layout_height="60dp"
+                android:src="@drawable/fastest" />
 
             <TextView
                 android:id="@+id/fastestClimb"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="Fastest Climb: " />
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray_500" />
-
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="10dp">
+            android:layout_width="145dp"
+            android:layout_height="111dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="61dp"
+                android:layout_height="51dp"
+                android:src="@drawable/fast" />
 
             <TextView
                 android:id="@+id/averageTime"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="Average Time per Climb: " />
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray_500" />
-
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="10dp">
+            android:layout_width="156dp"
+            android:layout_height="111dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_favourite" />
 
             <TextView
                 android:id="@+id/mostClimbed"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="Most Climbed Peak:" />
 
         </LinearLayout>
 
-               <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="10dp">
+        <LinearLayout
+            android:layout_width="146dp"
+            android:layout_height="134dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="53dp"
+                android:layout_height="54dp"
+                android:src="@drawable/ic_baseline_access_time_24" />
 
             <TextView
                 android:id="@+id/totalTime"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="Total Time Spent Climbing:" />
 
         </LinearLayout>
-    </LinearLayout>
+
+
+    </GridLayout>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
