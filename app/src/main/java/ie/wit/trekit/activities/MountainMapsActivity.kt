@@ -34,17 +34,12 @@ class MountainMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
     private lateinit var binding: ActivityMountainMapsBinding
     private lateinit var contentBinding: ContentMountainMapsBinding
     lateinit var map: GoogleMap
-    private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMountainMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
-
-
         setSupportActionBar(binding.toolbar)
 
         app = application as MainApp
@@ -57,11 +52,9 @@ class MountainMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
                 configureMap()
             }
         }
-
-
     }
 
-
+    //map set up with markers for all mountains, with tags and zoom
    private suspend fun configureMap() {
        map.setOnMarkerClickListener(this)
        map.uiSettings.isZoomControlsEnabled = true
@@ -70,10 +63,10 @@ class MountainMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
            val options = MarkerOptions().title(it.mountainName).position(loc)
            map.addMarker(options)?.tag = it.id
            map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 6f))
-
        }
    }
 
+    //next 5 functions as standard to manage lifecycle of map
     override fun onDestroy() {
         super.onDestroy()
         contentBinding.mapView.onDestroy()
@@ -98,6 +91,7 @@ class MountainMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
         super.onSaveInstanceState(outState)
         contentBinding.mapView.onSaveInstanceState(outState)
     }
+    //calls function when marker clicked
     override fun onMarkerClick(marker: Marker): Boolean {
         GlobalScope.launch(Dispatchers.Main) {
             doMarkerSelected(marker)
@@ -105,13 +99,14 @@ class MountainMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
         return true
 
     }
+    //retrieves mountain associated with tag and calls showMountain to display
         private suspend fun doMarkerSelected(marker: Marker) {
             val tag = marker.tag as Long
             val mountain: MountainModel? = app.mountains.findByid(tag)
             if (mountain != null) showMountain(mountain)
 
         }
-
+//binds info to textviews and sets click listener for more info on mountainActivity
     private fun showMountain(mountain: MountainModel){
         contentBinding.currentName.text = mountain.mountainName
         contentBinding.currentLat.text = mountain!!.mountainLat.toString()
@@ -123,5 +118,4 @@ class MountainMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
             startActivity(intent)
         }
     }
-
 }

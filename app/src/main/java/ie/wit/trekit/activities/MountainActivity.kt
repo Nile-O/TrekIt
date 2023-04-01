@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -21,8 +20,6 @@ class MountainActivity : AppCompatActivity() {
     var db = FirebaseDatabase.getInstance("https://trekit-ded67-default-rtdb.firebaseio.com/").getReference("mountains")
     lateinit var app: MainApp
 
-    private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMountainBinding.inflate(layoutInflater)
@@ -30,9 +27,8 @@ class MountainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         setContentView(binding.root)
         app = application as MainApp
-        //mountain = intent.hasExtra("mountain")!! as MountainModel
 
-
+        // launches activity with the mountain details either from extra mountain show or mountain depending on where the activity was launched from
        if (intent.hasExtra("mountain_show")) {
             mountain = intent.extras?.getParcelable("mountain_show")!!
             binding.mountainName.text = mountain.mountainName
@@ -72,6 +68,8 @@ class MountainActivity : AppCompatActivity() {
         }
         onResume()
     }
+
+    //menu for mountainActivity created
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_mountain_activity, menu)
         val favouriteItem = menu.findItem(R.id.item_favourite)
@@ -79,7 +77,7 @@ class MountainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-
+//menu item is selected runs one of the options associated
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_cancel -> {
@@ -101,7 +99,7 @@ class MountainActivity : AppCompatActivity() {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         val userFavouritesRef = FirebaseDatabase.getInstance("https://trekit-ded67-default-rtdb.firebaseio.com/")
             .getReference("user_favourites/$userId")
-        userFavouritesRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            userFavouritesRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 binding.toolbar.menu.findItem(R.id.item_favourite).isVisible =
                     !snapshot.child(mountain.mountainName).exists()
@@ -130,11 +128,11 @@ class MountainActivity : AppCompatActivity() {
         }
     }
 
+    //launches the AddClimbedDetailsActivity with the mountainName as extra
     private fun onAddToClimbedClicked(){
         val name = mountain.mountainName
         val intent = Intent(this, AddClimbedDetailsActivity::class.java)
         intent.putExtra("mountain_name", name)
         startActivity(intent)
     }
-
 }

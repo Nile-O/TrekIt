@@ -9,14 +9,11 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import ie.wit.trekit.R
-import ie.wit.trekit.databinding.ActivityMapBinding
 import ie.wit.trekit.models.MountainModel
 import timber.log.Timber.i
 
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
-
-    private lateinit var binding: ActivityMapBinding
 
     private lateinit var map: GoogleMap
     var mountain = MountainModel()
@@ -29,10 +26,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-
     }
 
+    //creating map from GoogleMap object then retrieving intent object with extras of long/lat
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         val intent = intent

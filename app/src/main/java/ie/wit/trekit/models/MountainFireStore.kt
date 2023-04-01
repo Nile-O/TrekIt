@@ -59,9 +59,7 @@ class MountainFireStore(context: Context) : MountainStore {
         db.addListenerForSingleValueEvent(valueEventListener)
     }
 
-    fun addClimbedMountain(fbId: String, climbedMountain: ClimbedMountain) {
-        db.child("users").child(userId).child("climbed_mountains").child(fbId).setValue(climbedMountain)
-
-
-    }
+    //fun addClimbedMountain(fbId: String, climbedMountain: ClimbedMountain) {
+      //  db.child("users").child(userId).child("climbed_mountains").child(fbId).setValue(climbedMountain)
+   // }
 }

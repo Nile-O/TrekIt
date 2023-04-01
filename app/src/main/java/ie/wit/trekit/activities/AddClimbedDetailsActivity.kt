@@ -27,8 +27,6 @@ class AddClimbedDetailsActivity : AppCompatActivity() {
     private var datePickerDialog: DatePickerDialog? = null
     private var dateButton: Button? = null
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_climbed_details)
@@ -36,16 +34,19 @@ class AddClimbedDetailsActivity : AppCompatActivity() {
         // Set up the toolbar
         setSupportActionBar(toolbar as Toolbar)
 
+        //add mountainName from the intent
         val mountainNameTextView: TextView = findViewById(R.id.mountainName)
         val mountainName = intent.getStringExtra("mountain_name")
         mountainNameTextView.text = mountainName
 
+        //initialising the date picker and displaying today's date on the date button
         initDatePicker()
         dateButton = findViewById(R.id.date_of_climb_input)
         i("dateButton = $dateButton")
         dateButton?.text = getTodayDate()
         numberPickerSetup()
 
+        //assigning save button to create climbedMountain variable
         val saveButton: Button = findViewById(R.id.button_save_details)
         saveButton.setOnClickListener {
             val mountainNameTextView: TextView = findViewById(R.id.mountainName)
@@ -65,11 +66,7 @@ class AddClimbedDetailsActivity : AppCompatActivity() {
             val climbedMountain = ClimbedMountain(mountainName, dateClimbed, duration)
             i("ClimbedMountain: $mountainName on $dateClimbed and it took $duration")
             saveClimbedMountain(climbedMountain)
-
-
         }
-
-
     }
 
     //function to save the climbed mountain to firebase
@@ -92,6 +89,7 @@ class AddClimbedDetailsActivity : AppCompatActivity() {
 
     }
 
+    //launching climbedListActivity upon saving details
     private fun openClimbedList() {
         startActivity(
         Intent(
@@ -101,18 +99,19 @@ class AddClimbedDetailsActivity : AppCompatActivity() {
     )
     }
 
-
+    //getting today's date
     @SuppressLint("TimberArgCount")
     private fun getTodayDate(): String {
         i("getTodayDate() called")
         val cal: Calendar = Calendar.getInstance()
         val year: Int = cal.get(Calendar.YEAR)
         var month: Int = cal.get(Calendar.MONTH)
-        month = month + 1
+        month += 1
         val day: Int = cal.get(Calendar.DAY_OF_MONTH)
         return makeDateString(day, month, year)
     }
 
+    //initialising the date picker
     private fun initDatePicker() {
         val dateSetListener =
             OnDateSetListener { _, year, month, day ->
@@ -130,46 +129,35 @@ class AddClimbedDetailsActivity : AppCompatActivity() {
         datePickerDialog!!.datePicker.maxDate = System.currentTimeMillis()
     }
 
-
+    //creating string for displaying date
     private fun makeDateString(day: Int, month: Int, year: Int): String {
         return getMonthFormat(month) + " " + day + " " + year
     }
 
+    //how month will be displayed
     private fun getMonthFormat(month: Int): String {
-        if (month == 1)
-            return "JAN"
-        if (month == 2)
-            return "FEB"
-        if (month == 3)
-            return "MAR"
-        if (month == 4)
-            return "APR"
-        if (month == 5)
-            return "MAY"
-        if (month == 6)
-            return "JUN"
-        if (month == 7)
-            return "JUL"
-        if (month == 8)
-            return "AUG"
-        if (month == 9)
-            return "SEP"
-        if (month == 10)
-            return "OCT"
-        if (month == 11)
-            return "NOV"
-        if (month == 12)
-            return "DEC"
-
-        //default should never happen
-        return "JAN"
+        return when (month) {
+            1 -> "JAN"
+            2 -> "FEB"
+            3 -> "MAR"
+            4 -> "APR"
+            5 -> "MAY"
+            6 -> "JUN"
+            7 -> "JUL"
+            8 -> "AUG"
+            9 -> "SEP"
+            10 -> "OCT"
+            11 -> "NOV"
+            12 -> "DEC"
+            else -> "JAN" //default should never happen
+        }
     }
-
 
     fun openDatePicker(view: View?) {
         datePickerDialog!!.show()
     }
 
+    //setting up number pickers for hours and mins - hours max 24 mins max 59
     private fun numberPickerSetup(){
         val hoursTakenPicker: NumberPicker = findViewById(R.id.hours_taken)
         hoursTakenPicker.minValue = 0
@@ -179,5 +167,4 @@ class AddClimbedDetailsActivity : AppCompatActivity() {
         minutesTakenPicker.minValue = 0
         minutesTakenPicker.maxValue = 59
     }
-
 }

@@ -10,7 +10,6 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-
 import androidx.recyclerview.widget.LinearLayoutManager
 import ie.wit.trekit.R
 import ie.wit.trekit.adapters.MountainAdapter
@@ -57,23 +56,29 @@ class MountainListActivity : AppCompatActivity(), MountainListener {
                 return true
             }
         })
-
     }
 
+    //when the mountain is clicked the MountainActivity is launched with the mountain details added as extra
     override fun onMountainClick(mountain: MountainModel) {
         val launcherIntent = Intent(this, MountainActivity::class.java)
         launcherIntent.putExtra("mountain_show", mountain)
         refreshIntentLauncher.launch(launcherIntent)
     }
+
+    //refresh the recyclerview when activity is launched
     private fun registerRefreshCallback() {
         refreshIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             { binding.recyclerView.adapter!!.notifyDataSetChanged() }
     }
+
+    //inflates the menu for favourite list
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_mountain_list, menu)
         return super.onCreateOptionsMenu(menu)
     }
+
+    //registers the selection and carries out selected option
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_cancel -> {
@@ -104,6 +109,7 @@ class MountainListActivity : AppCompatActivity(), MountainListener {
         }
     }
 
+    //filtering the list based on when a string is input in the searchview
     private fun filterMountainList(query: String?) {
         GlobalScope.launch(Dispatchers.Main) {
             val filteredList = app.mountains.findAll().filter { !it.isFavourite }

@@ -10,7 +10,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -32,10 +31,8 @@ class ClimbedListActivity : AppCompatActivity(), ClimbedMountainListener {
     lateinit var app: MainApp
     private lateinit var binding: ActivityClimbedListBinding
     private lateinit var refreshIntentLauncher: ActivityResultLauncher<Intent>
-    private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
     private var climbedMountains = mutableListOf<ClimbedMountain>()
-    private var fastestClimb: ClimbedMountain? = null
-    private var totalClimbs: Int = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,12 +49,11 @@ class ClimbedListActivity : AppCompatActivity(), ClimbedMountainListener {
         val adapter = ClimbedMountainsAdapter(climbedMountains, this)
         adapter.attachSwipeToDelete(recyclerView)
 
-
         fetchClimbedMountains()
 
         registerRefreshCallback()
-        registerMapCallback()
 
+        //implementing the search filter feature
         val searchView = findViewById<SearchView>(R.id.searchView)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -71,12 +67,13 @@ class ClimbedListActivity : AppCompatActivity(), ClimbedMountainListener {
             }
         })
 
+        //FAB to launch statsActivity with the stats as extras
         binding.floatingActionButton.setOnClickListener {
-            var totalClimbs = totalClimbs()
-            var totalTime = getTotalTime()
-            var averageTime = getAverageTime()
-            var mostClimbed =  getMostClimbedMountain(climbedMountains)
-            var fastestClimb = fastestClimb(climbedMountains)
+            val totalClimbs = totalClimbs()
+            val totalTime = getTotalTime()
+            val averageTime = getAverageTime()
+            val mostClimbed =  getMostClimbedMountain(climbedMountains)
+            val fastestClimb = fastestClimb(climbedMountains)
             val intent = Intent(this, StatsActivity::class.java)
                 intent.putExtra("totalTime", totalTime)
                 intent.putExtra("averageTime", averageTime)
@@ -87,17 +84,19 @@ class ClimbedListActivity : AppCompatActivity(), ClimbedMountainListener {
             startActivity(intent)
         }
 
-
     }
 
-    override suspend fun onClimbedMountainClick(climbedMountain: ClimbedMountain) {
-        val mountain = app.mountains.findOneMountainByName(climbedMountain.mountainName)
+    //when the mountain is clicked the MountainActivity is launched with the mountain details added as extra
+    @Suppress("NAME_SHADOWING")
+    override suspend fun onClimbedMountainClick(mountain: ClimbedMountain) {
+        val mountain = app.mountains.findOneMountainByName(mountain.mountainName)
         val mountainIntent = Intent(this, MountainActivity::class.java).apply {
             putExtra("mountain", mountain)
         }
         startActivity(mountainIntent)
     }
 
+    //refresh the recyclerview when activity is launched
     @SuppressLint("NotifyDataSetChanged")
     private fun registerRefreshCallback() {
         refreshIntentLauncher =
@@ -105,34 +104,31 @@ class ClimbedListActivity : AppCompatActivity(), ClimbedMountainListener {
             { binding.recyclerView.adapter!!.notifyDataSetChanged() }
     }
 
+    //inflates the menu for climbed list
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_climbed_list, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
+    //registers the selection and launches the main activity
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_home -> {
                 val launcherIntent = Intent(this, MainActivity::class.java)
-                mapIntentLauncher.launch(launcherIntent)
+                refreshIntentLauncher.launch(launcherIntent)
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun registerMapCallback() {
-        mapIntentLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            {}
-    }
-
+//updates the recycler view to show the new list of climbedMountains
     private fun updateRecyclerView(climbedMountains: MutableList<ClimbedMountain>) {
         GlobalScope.launch(Dispatchers.Main) {
             binding.recyclerView.adapter =
                 ClimbedMountainsAdapter(climbedMountains, this@ClimbedListActivity)
         }
     }
-
+//retrieving the list of climbed mountains from firebase and updating the recyclerView
     private fun fetchClimbedMountains() {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         val userClimbedRef =
@@ -155,10 +151,9 @@ class ClimbedListActivity : AppCompatActivity(), ClimbedMountainListener {
                 i(databaseError.toException(), "fetchClimbedMountains:onCancelled")
             }
         })
-        //showClimbingStats(climbedMountains)
-
 
     }
+    //filtering the list based on when a string is input in the searchview
     private fun filterMountainList(query: String?) {
         GlobalScope.launch(Dispatchers.Main) {
             val filteredList = climbedMountains.filter { it.mountainName.contains(query ?: "", true) }
@@ -167,27 +162,11 @@ class ClimbedListActivity : AppCompatActivity(), ClimbedMountainListener {
     }
 }
 
-    private fun showClimbingStats(climbedMountains: List<ClimbedMountain>) {
-        var totalClimbs = climbedMountains.size
-        var fastestClimb: ClimbedMountain? = null
-        for (climbedMountain in climbedMountains) {
-            if (fastestClimb == null || climbedMountain.duration < fastestClimb.duration) {
-                fastestClimb = climbedMountain
-            }
-        }
-        val fastestClimbText = fastestClimb?.let {
-            "Fastest climb: ${it.mountainName} (${it.duration} minutes)"
-        } ?: "No climbs recorded"
-        val totalClimbsText = "Total climbs: $totalClimbs"
-
-
+//calculate total number of climbs
+    private fun totalClimbs(): Int {
+        return climbedMountains.size
     }
-
-    private fun totalClimbs():Int {
-        var totalClimbs = climbedMountains.size
-        return totalClimbs
-    }
-
+//calculate the fastest climb by looking at duration of each climb and saving the lowest value
     private fun fastestClimb(climbedMountains: List<ClimbedMountain>): String {
         if (climbedMountains.isEmpty()) {
             return "No mountains climbed yet"
@@ -200,7 +179,7 @@ class ClimbedListActivity : AppCompatActivity(), ClimbedMountainListener {
         }
         return "${fastestClimb?.mountainName} (${fastestClimb?.duration} minutes)"
     }
-
+//total time calculated by adding all the durations
     private fun getTotalTime(): Int {
         var totalTime = 0
         for (climbedMountain in climbedMountains) {
@@ -208,7 +187,7 @@ class ClimbedListActivity : AppCompatActivity(), ClimbedMountainListener {
         }
         return totalTime
     }
-
+//average time calculated by dividing the total time by number of climbedMountains
     private fun getAverageTime(): Double {
         val totalTime = getTotalTime()
         return if (totalTime > 0) {
@@ -217,6 +196,7 @@ class ClimbedListActivity : AppCompatActivity(), ClimbedMountainListener {
             0.0
         }
     }
+    //most climbed calculated by mountainCounts map created then each climbed mountain added and count value increased by 1 -highest counted mountain's name is returned
     private fun getMostClimbedMountain(climbedMountains: List<ClimbedMountain>): String {
         if (climbedMountains.isEmpty()) {
             return "No mountains climbed yet"
@@ -233,6 +213,4 @@ class ClimbedListActivity : AppCompatActivity(), ClimbedMountainListener {
             "$it (${mountainCounts[it]} climbs)"
         } ?: "No mountains climbed yet"
     }
-
-
 }

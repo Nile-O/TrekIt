@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mDrawerLayout: DrawerLayout
     private lateinit var binding: ActivityMainBinding
     var app: MainApp? = null
-    private lateinit var refreshIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var editIntentLauncher: ActivityResultLauncher<Intent>
 
 
@@ -43,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         app = application as MainApp
 
+        //binding buttons to views and setting activities to be launched when clicked
         val allBtn = findViewById<Button>(R.id.allBtn)
         val faveBtn = findViewById<Button>(R.id.faveBtn)
         val climbBtn = findViewById<Button>(R.id.climbBtn)
@@ -76,11 +76,11 @@ class MainActivity : AppCompatActivity() {
 
         registerEditCallback()
 
+        //set up of navigation drawer and selection of items from menu in drawer
         val actionbar: androidx.appcompat.app.ActionBar? = supportActionBar
         actionbar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
-
         }
         mDrawerLayout = findViewById(R.id.drawerLayout)
 
@@ -137,11 +137,11 @@ class MainActivity : AppCompatActivity() {
                 mDrawerLayout.openDrawer(GravityCompat.START)
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }
 
+    //logout of app
     private suspend fun doLogout() {
         FirebaseAuth.getInstance().signOut()
         app?.mountains?.clear()
@@ -149,16 +149,17 @@ class MainActivity : AppCompatActivity() {
         editIntentLauncher.launch(launcherIntent)
     }
 
+    //open mountainlistactivity
     private fun doAllPeaks() {
         val launcherIntent = Intent(this, MountainListActivity::class.java)
         editIntentLauncher.launch(launcherIntent)
     }
-
+    //open favouritelistactivity
     private fun doFavouritePeaks() {
         val launcherIntent = Intent(this, FavouriteListActivity::class.java)
         editIntentLauncher.launch(launcherIntent)
     }
-
+    //open climbedlistactivity
     private fun doClimbedPeaks() {
         val launcherIntent = Intent(this, ClimbedListActivity::class.java)
         editIntentLauncher.launch(launcherIntent)

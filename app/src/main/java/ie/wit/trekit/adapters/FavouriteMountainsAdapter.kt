@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import ie.wit.trekit.activities.FavouriteListActivity
 import ie.wit.trekit.databinding.CardMountainBinding
 import ie.wit.trekit.models.MountainModel
 import timber.log.Timber.i
@@ -39,6 +38,7 @@ class FavouriteMountainsAdapter(private var favouriteMountains: MutableList<Moun
     class MainHolder(private val binding: CardMountainBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        //binding data from mountainModel to textviews
         fun bind(favouriteMountain: MountainModel, listener: FavMountainListener) {
             binding.mountainName.text = favouriteMountain.mountainName
             binding.elevation.text = favouriteMountain.elevation.toString()
@@ -47,18 +47,14 @@ class FavouriteMountainsAdapter(private var favouriteMountains: MutableList<Moun
             }
         }
     }
+    //deleting item from list
     fun deleteItem(position: Int) {
-
             val mountain = favouriteMountains[position]
-
             deleteFavouriteFromFirebase(mountain, false)
-
-
             notifyItemRemoved(position)
-
-
     }
 
+    //deleting item from firebase
     private fun deleteFavouriteFromFirebase(mountain: MountainModel, isFavourite: Boolean) {
             val userId = FirebaseAuth.getInstance().currentUser?.uid
             val userFavouritesRef = FirebaseDatabase.getInstance("https://trekit-ded67-default-rtdb.firebaseio.com/").getReference("user_favourites/$userId")
@@ -70,7 +66,6 @@ class FavouriteMountainsAdapter(private var favouriteMountains: MutableList<Moun
             } else {
                 i("Item Removed")
                 userFavouritesRef.child(mountain.mountainName).removeValue()
-
             }
         }
 
@@ -79,7 +74,7 @@ class FavouriteMountainsAdapter(private var favouriteMountains: MutableList<Moun
         notifyDataSetChanged()
     }
 
-
+//function to delete when user swipes left or right on the item in the recycler view
     fun attachSwipeToDelete(recyclerView: RecyclerView) {
         itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             0,ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
@@ -97,10 +92,8 @@ class FavouriteMountainsAdapter(private var favouriteMountains: MutableList<Moun
                 deleteItem(position)
                 notifyDataSetChanged()
                 Toast.makeText(viewHolder.itemView.context, "Deleted", Toast.LENGTH_LONG).show()
-
             }
         })
-
         itemTouchHelper?.attachToRecyclerView(recyclerView)
     }
 }

@@ -2,13 +2,10 @@ package ie.wit.trekit.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import ie.wit.trekit.R
-import ie.wit.trekit.activities.AddClimbedDetailsActivity
 import ie.wit.trekit.databinding.CardClimbedMountainBinding
 import ie.wit.trekit.models.ClimbedMountain
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +33,7 @@ class ClimbedMountainsAdapter(private var climbedMountains: MutableList<ClimbedM
 
     class MainHolder(private val binding: CardClimbedMountainBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
+    //binding data from climbedMountain to textviews
         fun bind(climbedMountain: ClimbedMountain, listener: ClimbedMountainListener) {
             binding.mountainName.text = climbedMountain.mountainName
             binding.dateOfClimbInput.text = climbedMountain.dateClimbed
@@ -46,7 +43,7 @@ class ClimbedMountainsAdapter(private var climbedMountains: MutableList<ClimbedM
             }
         }
     }
-
+    //delete item from list
     fun deleteItem(position: Int) {
         val climbedMountain = climbedMountains[position]
         climbedMountain.key?.let { deleteClimbedFromFirebase(it) }
@@ -55,6 +52,7 @@ class ClimbedMountainsAdapter(private var climbedMountains: MutableList<ClimbedM
         notifyItemRangeChanged(position, climbedMountains.size - position)
     }
 
+    //delete item from firebase
     private fun deleteClimbedFromFirebase(key: String) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         val userClimbedRef = FirebaseDatabase.getInstance("https://trekit-ded67-default-rtdb.firebaseio.com/").getReference("user_climbed_mountains/$userId")
@@ -67,6 +65,8 @@ class ClimbedMountainsAdapter(private var climbedMountains: MutableList<ClimbedM
         notifyDataSetChanged()
     }
 
+
+    //function to delete when user swipes left or right on the item in the recycler view
     fun attachSwipeToDelete(recyclerView: RecyclerView) {
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT

@@ -5,7 +5,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import ie.wit.trekit.R
 import ie.wit.trekit.databinding.ActivityStatsBinding
 import ie.wit.trekit.main.MainApp
@@ -23,11 +22,11 @@ class StatsActivity : AppCompatActivity() {
         setContentView(binding.root)
         app = application as MainApp
 
-        var totalClimbs = intent.getIntExtra("totalClimbs", 0)
-        var fastestClimb = intent.getStringExtra("fastestClimb") ?: "Unknown"
-        var totalTime = intent.getIntExtra("totalTime", 0)
-        var averageTime = intent.getDoubleExtra("averageTime", 0.0)
-        var mostClimbed =  intent.getStringExtra("mostClimbed") ?: "Unknown"
+        val totalClimbs = intent.getIntExtra("totalClimbs", 0)
+        val fastestClimb = intent.getStringExtra("fastestClimb") ?: "Unknown"
+        val totalTime = intent.getIntExtra("totalTime", 0)
+        val averageTime = intent.getDoubleExtra("averageTime", 0.0)
+        val mostClimbed =  intent.getStringExtra("mostClimbed") ?: "Unknown"
 
         val totalClimbedTextView = findViewById<TextView>(R.id.totalClimbs)
         val fastestClimbTextView = findViewById<TextView>(R.id.fastestClimb)
